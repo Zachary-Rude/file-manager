@@ -1,0 +1,29 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.1622
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "File Manager", "File Manager\File Manager.csproj", "{72A7C9B7-9752-4C10-A9BF-8C78972045B3}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Files Setup", "Files Setup\Files Setup.vdproj", "{931E66BA-6741-4D1F-B247-12BE0609BAB8}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{72A7C9B7-9752-4C10-A9BF-8C78972045B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{72A7C9B7-9752-4C10-A9BF-8C78972045B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{72A7C9B7-9752-4C10-A9BF-8C78972045B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{72A7C9B7-9752-4C10-A9BF-8C78972045B3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{931E66BA-6741-4D1F-B247-12BE0609BAB8}.Debug|Any CPU.ActiveCfg = Debug
+		{931E66BA-6741-4D1F-B247-12BE0609BAB8}.Release|Any CPU.ActiveCfg = Release
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E0E5527E-DB52-4297-9298-1F6433369747}
+	EndGlobalSection
+EndGlobal
