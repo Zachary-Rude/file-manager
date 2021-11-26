@@ -96,6 +96,7 @@
             // 
             this.txtLocation.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtLocation.ContextMenuStrip = this.contextMenuStrip1;
             this.txtLocation.Location = new System.Drawing.Point(61, 27);
             this.txtLocation.Multiline = true;
             this.txtLocation.Name = "txtLocation";
