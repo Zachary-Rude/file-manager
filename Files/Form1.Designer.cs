@@ -75,6 +75,7 @@
             this.btnBack.Name = "btnBack";
             this.btnBack.Size = new System.Drawing.Size(25, 23);
             this.btnBack.TabIndex = 0;
+            this.btnBack.TabStop = false;
             this.btnBack.Text = "<-";
             this.btnBack.UseVisualStyleBackColor = true;
             this.btnBack.Click += new System.EventHandler(this.btnBack_Click);
@@ -87,7 +88,8 @@
             this.btnForward.Location = new System.Drawing.Point(30, 25);
             this.btnForward.Name = "btnForward";
             this.btnForward.Size = new System.Drawing.Size(25, 23);
-            this.btnForward.TabIndex = 1;
+            this.btnForward.TabIndex = 0;
+            this.btnForward.TabStop = false;
             this.btnForward.Text = "->";
             this.btnForward.UseVisualStyleBackColor = true;
             this.btnForward.Click += new System.EventHandler(this.btnForward_Click);
@@ -101,7 +103,8 @@
             this.txtLocation.Multiline = true;
             this.txtLocation.Name = "txtLocation";
             this.txtLocation.Size = new System.Drawing.Size(795, 20);
-            this.txtLocation.TabIndex = 3;
+            this.txtLocation.TabIndex = 0;
+            this.txtLocation.TabStop = false;
             this.txtLocation.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtLocation_KeyUp);
             // 
             // fileBrowser
@@ -113,7 +116,8 @@
             this.fileBrowser.MinimumSize = new System.Drawing.Size(20, 20);
             this.fileBrowser.Name = "fileBrowser";
             this.fileBrowser.Size = new System.Drawing.Size(716, 500);
-            this.fileBrowser.TabIndex = 5;
+            this.fileBrowser.TabIndex = 0;
+            this.fileBrowser.TabStop = false;
             this.fileBrowser.Navigated += new System.Windows.Forms.WebBrowserNavigatedEventHandler(this.fileBrowser_Navigated);
             // 
             // menuStrip1
@@ -296,7 +300,8 @@
             this.expTree1.ShowRootLines = false;
             this.expTree1.Size = new System.Drawing.Size(186, 500);
             this.expTree1.StartUpDirectory = ExpTreeLib.ExpTree.StartDir.MyComputer;
-            this.expTree1.TabIndex = 8;
+            this.expTree1.TabIndex = 0;
+            this.expTree1.TabStop = false;
             // 
             // btnRefresh
             // 
@@ -308,7 +313,8 @@
             this.btnRefresh.Location = new System.Drawing.Point(862, 25);
             this.btnRefresh.Name = "btnRefresh";
             this.btnRefresh.Size = new System.Drawing.Size(25, 23);
-            this.btnRefresh.TabIndex = 9;
+            this.btnRefresh.TabIndex = 0;
+            this.btnRefresh.TabStop = false;
             this.btnRefresh.Text = "⟳";
             this.btnRefresh.UseVisualStyleBackColor = true;
             this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
