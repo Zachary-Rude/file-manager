@@ -13,10 +13,10 @@
     <ROW Property="ARPCOMMENTS" Value="This installer database contains the logic and data required to install [|ProductName]." ValueLocId="*"/>
     <ROW Property="ARPPRODUCTICON" Value="files.exe" Type="8"/>
     <ROW Property="Manufacturer" Value="Zach, Inc."/>
-    <ROW Property="ProductCode" Value="1033:{91B8135B-0E30-4616-9B92-1189CBACA2DB} " Type="16"/>
+    <ROW Property="ProductCode" Value="1033:{1D0C6122-3183-4535-8F96-B1FD8567BA73} " Type="16"/>
     <ROW Property="ProductLanguage" Value="1033"/>
     <ROW Property="ProductName" Value="Files"/>
-    <ROW Property="ProductVersion" Value="1.1.2" Type="32"/>
+    <ROW Property="ProductVersion" Value="1.1.4" Type="32"/>
     <ROW Property="SecureCustomProperties" Value="OLDPRODUCTS;AI_NEWERPRODUCTFOUND"/>
     <ROW Property="UpgradeCode" Value="{FDC9921F-54BB-4FC1-ABBD-1D75D250DEE8}"/>
     <ROW Property="WindowsType9X" MultiBuildValue="DefaultBuild:Windows 9x/ME" ValueLocId="-"/>

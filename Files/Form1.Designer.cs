@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.btnBack = new System.Windows.Forms.Button();
             this.btnForward = new System.Windows.Forms.Button();
@@ -45,6 +46,7 @@
             this.forwardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.copyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.folderOptionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.windowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.maximizeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.minimizeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -55,8 +57,13 @@
             this.aboutFilesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.expTree1 = new ExpTreeLib.ExpTree();
             this.btnRefresh = new System.Windows.Forms.Button();
-            this.folderOptionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.copyPathToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.backToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.forwardToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.navigateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
+            this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnBack
@@ -87,8 +94,7 @@
             // 
             // txtLocation
             // 
-            this.txtLocation.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+            this.txtLocation.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtLocation.Location = new System.Drawing.Point(61, 27);
             this.txtLocation.Multiline = true;
@@ -209,6 +215,13 @@
             this.viewToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
             this.viewToolStripMenuItem.Text = "View";
             // 
+            // folderOptionsToolStripMenuItem
+            // 
+            this.folderOptionsToolStripMenuItem.Name = "folderOptionsToolStripMenuItem";
+            this.folderOptionsToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
+            this.folderOptionsToolStripMenuItem.Text = "Folder options";
+            this.folderOptionsToolStripMenuItem.Click += new System.EventHandler(this.folderOptionsToolStripMenuItem_Click);
+            // 
             // windowToolStripMenuItem
             // 
             this.windowToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -273,9 +286,8 @@
             // expTree1
             // 
             this.expTree1.AllowFolderRename = false;
-            this.expTree1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.expTree1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
             this.expTree1.Cursor = System.Windows.Forms.Cursors.Default;
             this.expTree1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.expTree1.Location = new System.Drawing.Point(-1, 53);
@@ -287,6 +299,7 @@
             // 
             // btnRefresh
             // 
+            this.btnRefresh.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnRefresh.FlatAppearance.BorderColor = System.Drawing.Color.Black;
             this.btnRefresh.FlatAppearance.BorderSize = 0;
             this.btnRefresh.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -299,12 +312,41 @@
             this.btnRefresh.UseVisualStyleBackColor = true;
             this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
             // 
-            // folderOptionsToolStripMenuItem
+            // contextMenuStrip1
             // 
-            this.folderOptionsToolStripMenuItem.Name = "folderOptionsToolStripMenuItem";
-            this.folderOptionsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.folderOptionsToolStripMenuItem.Text = "Folder options";
-            this.folderOptionsToolStripMenuItem.Click += new System.EventHandler(this.folderOptionsToolStripMenuItem_Click);
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.copyPathToolStripMenuItem,
+            this.navigateToolStripMenuItem,
+            this.backToolStripMenuItem1,
+            this.forwardToolStripMenuItem1});
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(181, 114);
+            // 
+            // copyPathToolStripMenuItem
+            // 
+            this.copyPathToolStripMenuItem.Name = "copyPathToolStripMenuItem";
+            this.copyPathToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.copyPathToolStripMenuItem.Text = "Copy path";
+            this.copyPathToolStripMenuItem.Click += new System.EventHandler(this.copyPathToolStripMenuItem_Click);
+            // 
+            // backToolStripMenuItem1
+            // 
+            this.backToolStripMenuItem1.Name = "backToolStripMenuItem1";
+            this.backToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
+            this.backToolStripMenuItem1.Text = "Back";
+            // 
+            // forwardToolStripMenuItem1
+            // 
+            this.forwardToolStripMenuItem1.Name = "forwardToolStripMenuItem1";
+            this.forwardToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
+            this.forwardToolStripMenuItem1.Text = "Forward";
+            // 
+            // navigateToolStripMenuItem
+            // 
+            this.navigateToolStripMenuItem.Name = "navigateToolStripMenuItem";
+            this.navigateToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.navigateToolStripMenuItem.Text = "Navigate";
+            this.navigateToolStripMenuItem.Click += new System.EventHandler(this.navigateToolStripMenuItem_Click);
             // 
             // Form1
             // 
@@ -324,6 +366,7 @@
             this.Text = "Files";
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -358,6 +401,11 @@
         private ExpTreeLib.ExpTree expTree1;
         public System.Windows.Forms.Button btnRefresh;
         private System.Windows.Forms.ToolStripMenuItem folderOptionsToolStripMenuItem;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem copyPathToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem backToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem forwardToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem navigateToolStripMenuItem;
     }
 }
 

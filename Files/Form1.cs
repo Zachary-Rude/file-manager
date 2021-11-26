@@ -152,5 +152,15 @@ namespace Files
             Process.Start("rundll32.exe", "shell32.dll,Options_RunDLL 0");
             fileBrowser.Refresh();
         }
+
+        private void copyPathToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            txtLocation.Copy();
+        }
+
+        private void navigateToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            fileBrowser.Navigate(txtLocation.Text);
+        }
     }
 }
