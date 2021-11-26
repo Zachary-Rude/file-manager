@@ -1,0 +1,24 @@
+C:\Users\zacha\source\repos\File Manager\Files\bin\Debug\Files.exe.config
+C:\Users\zacha\source\repos\File Manager\Files\bin\Debug\Files.exe
+C:\Users\zacha\source\repos\File Manager\Files\bin\Debug\Files.pdb
+C:\Users\zacha\source\repos\File Manager\Files\obj\Debug\Files.Properties.Resources.resources
+C:\Users\zacha\source\repos\File Manager\Files\obj\Debug\Files.csproj.GenerateResource.cache
+C:\Users\zacha\source\repos\File Manager\Files\obj\Debug\Files.csproj.CoreCompileInputs.cache
+C:\Users\zacha\source\repos\File Manager\Files\obj\Debug\Files.exe
+C:\Users\zacha\source\repos\File Manager\Files\obj\Debug\Files.pdb
+C:\Users\zacha\source\repos\File Manager\Files\obj\Debug\Files.createFileForm.resources
+C:\Users\zacha\source\repos\File Manager\Files\obj\Debug\Files.Form1.resources
+C:\Users\zacha\source\repos\File Manager\Files\obj\Debug\Files.csprojAssemblyReference.cache
+C:\Users\zacha\source\repos\Files\Files\bin\Debug\Files.exe.config
+C:\Users\zacha\source\repos\Files\Files\bin\Debug\Files.exe
+C:\Users\zacha\source\repos\Files\Files\bin\Debug\Files.pdb
+C:\Users\zacha\source\repos\Files\Files\obj\Debug\Files.AboutFilesForm.resources
+C:\Users\zacha\source\repos\Files\Files\obj\Debug\Files.createFileForm.resources
+C:\Users\zacha\source\repos\Files\Files\obj\Debug\Files.Form1.resources
+C:\Users\zacha\source\repos\Files\Files\obj\Debug\Files.Properties.Resources.resources
+C:\Users\zacha\source\repos\Files\Files\obj\Debug\Files.csproj.GenerateResource.cache
+C:\Users\zacha\source\repos\Files\Files\obj\Debug\Files.csproj.CoreCompileInputs.cache
+C:\Users\zacha\source\repos\Files\Files\obj\Debug\Files.exe
+C:\Users\zacha\source\repos\Files\Files\obj\Debug\Files.pdb
+C:\Users\zacha\source\repos\Files\Files\obj\Debug\Files.csproj.CopyComplete
+C:\Users\zacha\source\repos\Files\Files\bin\Debug\ExpTreeLib.dll
