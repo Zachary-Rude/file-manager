@@ -320,31 +320,31 @@
             this.backToolStripMenuItem1,
             this.forwardToolStripMenuItem1});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(181, 114);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(130, 92);
             // 
             // copyPathToolStripMenuItem
             // 
             this.copyPathToolStripMenuItem.Name = "copyPathToolStripMenuItem";
-            this.copyPathToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.copyPathToolStripMenuItem.Size = new System.Drawing.Size(129, 22);
             this.copyPathToolStripMenuItem.Text = "Copy path";
             this.copyPathToolStripMenuItem.Click += new System.EventHandler(this.copyPathToolStripMenuItem_Click);
             // 
             // backToolStripMenuItem1
             // 
             this.backToolStripMenuItem1.Name = "backToolStripMenuItem1";
-            this.backToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
+            this.backToolStripMenuItem1.Size = new System.Drawing.Size(129, 22);
             this.backToolStripMenuItem1.Text = "Back";
             // 
             // forwardToolStripMenuItem1
             // 
             this.forwardToolStripMenuItem1.Name = "forwardToolStripMenuItem1";
-            this.forwardToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
+            this.forwardToolStripMenuItem1.Size = new System.Drawing.Size(129, 22);
             this.forwardToolStripMenuItem1.Text = "Forward";
             // 
             // navigateToolStripMenuItem
             // 
             this.navigateToolStripMenuItem.Name = "navigateToolStripMenuItem";
-            this.navigateToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.navigateToolStripMenuItem.Size = new System.Drawing.Size(129, 22);
             this.navigateToolStripMenuItem.Text = "Navigate";
             this.navigateToolStripMenuItem.Click += new System.EventHandler(this.navigateToolStripMenuItem_Click);
             // 
@@ -353,6 +353,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(899, 552);
+            this.ContextMenuStrip = this.contextMenuStrip1;
             this.Controls.Add(this.btnRefresh);
             this.Controls.Add(this.expTree1);
             this.Controls.Add(this.fileBrowser);
