@@ -11,11 +11,57 @@ using System.IO;
 using System.Diagnostics;
 using System.Security.AccessControl;
 using System.Security.Principal;
+using System.Runtime.InteropServices;
 
 namespace Files
 {
     public partial class Form1 : Form
     {
+        private const int LV_VIEW_ICON = 0x0000;
+
+        private const int LV_VIEW_DETAILS = 0x0001;
+
+        private const int LV_VIEW_SMALLICON = 0x0002;
+
+        private const int LV_VIEW_LIST = 0x0003;
+
+        private const int LV_VIEW_TILE = 0x0004;
+
+        private const int EM_HIDEBALLOONTIP = 0x1504;
+
+        private const int LVM_SETVIEW = 0x108E;
+
+        private const string ListViewClassName = "SysListView32";
+
+
+
+        private static readonly HandleRef NullHandleRef = new HandleRef(null, IntPtr.Zero);
+
+
+
+        [DllImport("user32.dll", ExactSpelling = true)]
+
+        private static extern bool EnumChildWindows(HandleRef hwndParent, EnumChildrenCallback lpEnumFunc, HandleRef lParam);
+
+
+
+        [DllImport("user32.dll", CharSet = CharSet.Auto)]
+
+        private static extern int SendMessage(HandleRef hWnd, uint Msg, int wParam, int lParam);
+
+
+
+        [DllImport("user32.dll", CharSet = CharSet.Auto)]
+
+        private static extern uint RealGetWindowClass(IntPtr hwnd, [Out] StringBuilder pszType, uint cchType);
+
+
+
+        private delegate bool EnumChildrenCallback(IntPtr hwnd, IntPtr lParam);
+
+
+
+        private HandleRef listViewHandle;
         public Form1()
         {
             InitializeComponent();
@@ -106,7 +152,7 @@ namespace Files
 
         private void copyToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            using (OpenFileDialog fileDialog = new OpenFileDialog())
+            using (OpenFileDialog fileDialog = new OpenFileDialog() { Title = "Select a file to copy" })
             {
                 if (fileDialog.ShowDialog() == DialogResult.OK)
                 {
@@ -118,6 +164,18 @@ namespace Files
         private void newFileToolStripMenuItem_Click(object sender, EventArgs e)
         {
             FileStream fs = File.Create(txtLocation.Text + @"\Untitled.txt");
+            fileBrowser.Refresh();
+        }
+
+        private void btnRefresh_Click(object sender, EventArgs e)
+        {
+            fileBrowser.Refresh();
+            expTree1.Refresh();
+        }
+
+        private void folderOptionsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Process.Start("rundll32.exe", "shell32.dll,Options_RunDLL 0");
             fileBrowser.Refresh();
         }
 
@@ -141,18 +199,6 @@ namespace Files
             this.Close();
         }
 
-        private void btnRefresh_Click(object sender, EventArgs e)
-        {
-            fileBrowser.Refresh();
-            expTree1.Refresh();
-        }
-
-        private void folderOptionsToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Process.Start("rundll32.exe", "shell32.dll,Options_RunDLL 0");
-            fileBrowser.Refresh();
-        }
-
         private void copyPathToolStripMenuItem_Click(object sender, EventArgs e)
         {
             txtLocation.Copy();
@@ -161,6 +207,85 @@ namespace Files
         private void navigateToolStripMenuItem_Click(object sender, EventArgs e)
         {
             fileBrowser.Navigate(txtLocation.Text);
+        }
+
+        private void menuItem5_Click(object sender, EventArgs e)
+        {
+            FindListViewHandle();
+
+
+
+            if (this.listViewHandle.Handle != IntPtr.Zero)
+
+            {
+
+                // we found windows list view
+
+
+
+                int view = 0;
+
+
+
+                if (this.menuItem17.Checked)
+
+                    view = LV_VIEW_DETAILS;
+
+                else if (this.menuItem14.Checked)
+
+                    view = LV_VIEW_ICON;
+
+                else if (this.menuItem16.Checked)
+
+                    view = LV_VIEW_SMALLICON;
+
+                else if (this.menuItem18.Checked)
+
+                    view = LV_VIEW_TILE;
+
+
+
+                SendMessage(this.listViewHandle, LVM_SETVIEW, view, 0);
+
+            }
+        }
+
+        private void FindListViewHandle()
+
+        {
+
+            this.listViewHandle = NullHandleRef;
+
+
+
+            EnumChildrenCallback lpEnumFunc = new EnumChildrenCallback(EnumChildren);
+
+            EnumChildWindows(new HandleRef(this.fileBrowser, this.fileBrowser.Handle), lpEnumFunc, NullHandleRef);
+
+        }
+
+
+
+        private bool EnumChildren(IntPtr hwnd, IntPtr lparam)
+
+        {
+
+            StringBuilder sb = new StringBuilder(100);
+
+            RealGetWindowClass(hwnd, sb, 100);
+
+            if (sb.ToString() == ListViewClassName) // is this a windows list view?
+
+            {
+
+                // this is a windows list view control
+
+                this.listViewHandle = new HandleRef(null, hwnd);
+
+            }
+
+            return true;
+
         }
     }
 }

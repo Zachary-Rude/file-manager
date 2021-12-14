@@ -3,7 +3,7 @@
   <COMPONENT cid="caphyon.advinst.msicomp.MsiPropsComponent">
     <ROW Property="AI_BITMAP_DISPLAY_MODE" Value="0"/>
     <ROW Property="AI_CURRENT_YEAR" Value="2021" ValueLocId="-"/>
-    <ROW Property="AI_PROPPATH_DIR_PERBUILD_ExpTreeLib.dll" Value="..\packages\ExpTreeLib.3.2.0\lib"/>
+    <ROW Property="AI_PROPPATH_DIR_PERBUILD_ExpTreeLib.dll" Value="..\..\..\..\.nuget\packages\exptreelib\3.2.0\lib"/>
     <ROW Property="AI_PROPPATH_DIR_PERBUILD_Files.exe" Value="..\Files\bin\Debug"/>
     <ROW Property="AI_PROPPATH_DIR_PERBUILD_Files.exe.config" Value="..\Files\bin\Debug"/>
     <ROW Property="AI_PROPPATH_FILENAME_PERBUILD_ExpTreeLib.dll" Value="ExpTreeLib.dll"/>
@@ -30,6 +30,7 @@
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiDirsComponent">
     <ROW Directory="APPDIR" Directory_Parent="TARGETDIR" DefaultDir="APPDIR:." IsPseudoRoot="1"/>
+    <ROW Directory="DesktopFolder" Directory_Parent="TARGETDIR" DefaultDir="DESKTO~1|DesktopFolder" IsPseudoRoot="1"/>
     <ROW Directory="SHORTCUTDIR" Directory_Parent="TARGETDIR" DefaultDir="SHORTC~1|SHORTCUTDIR" IsPseudoRoot="1"/>
     <ROW Directory="TARGETDIR" DefaultDir="SourceDir"/>
   </COMPONENT>
@@ -59,7 +60,7 @@
     <ROW BootstrOptKey="GlobalOptions" DownloadFolder="[AppDataFolder][|Manufacturer]\[|ProductName]\prerequisites" Options="2"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.BuildComponent">
-    <ROW BuildKey="DefaultBuild" BuildName="DefaultBuild" BuildOrder="1" BuildType="0" Languages="en" InstallationType="4" UseLargeSchema="true"/>
+    <ROW BuildKey="DefaultBuild" BuildName="DefaultBuild" BuildOrder="1" BuildType="0" PackageFileName="Files_1_1_4_Setup" Languages="en" InstallationType="4" UseLargeSchema="true"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.DictionaryComponent">
     <ROW Path="&lt;AI_DICTS&gt;ui.ail"/>
@@ -167,6 +168,7 @@
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiShortsComponent">
     <ROW Shortcut="Files" Directory_="SHORTCUTDIR" Name="Files" Component_="Files_PrimaryOutput" Target="[#Files.exe]" Hotkey="0" IconIndex="0" ShowCmd="1"/>
+    <ROW Shortcut="Files_1" Directory_="DesktopFolder" Name="Files" Component_="AI_PROPPATH_FILENAME_PERBUILD_Files.exe" Target="[#Files.exe]" Hotkey="0" IconIndex="0" ShowCmd="1"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiThemeComponent">
     <ATTRIBUTE name="UsedTheme" value="classic"/>

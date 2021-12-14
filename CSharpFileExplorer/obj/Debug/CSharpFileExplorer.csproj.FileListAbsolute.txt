@@ -1,0 +1,8 @@
+C:\Users\zacha\source\repos\Files\CSharpFileExplorer\bin\Debug\CSharpFileExplorer.dll
+C:\Users\zacha\source\repos\Files\CSharpFileExplorer\bin\Debug\CSharpFileExplorer.pdb
+C:\Users\zacha\source\repos\Files\CSharpFileExplorer\bin\Debug\Newtonsoft.Json.dll
+C:\Users\zacha\source\repos\Files\CSharpFileExplorer\bin\Debug\Newtonsoft.Json.xml
+C:\Users\zacha\source\repos\Files\CSharpFileExplorer\obj\Debug\CSharpFileExplorer.csproj.CoreCompileInputs.cache
+C:\Users\zacha\source\repos\Files\CSharpFileExplorer\obj\Debug\CSharpFileExplorer.csproj.CopyComplete
+C:\Users\zacha\source\repos\Files\CSharpFileExplorer\obj\Debug\CSharpFileExplorer.dll
+C:\Users\zacha\source\repos\Files\CSharpFileExplorer\obj\Debug\CSharpFileExplorer.pdb
