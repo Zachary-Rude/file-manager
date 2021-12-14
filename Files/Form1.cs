@@ -227,19 +227,19 @@ namespace Files
 
 
 
-                if (this.menuItem17.Checked)
+                if (sender == menuItem17)
 
                     view = LV_VIEW_DETAILS;
 
-                else if (this.menuItem14.Checked)
+                else if (sender == menuItem14)
 
                     view = LV_VIEW_ICON;
 
-                else if (this.menuItem16.Checked)
+                else if (sender == menuItem16)
 
                     view = LV_VIEW_SMALLICON;
 
-                else if (this.menuItem18.Checked)
+                else if (sender == menuItem18)
 
                     view = LV_VIEW_TILE;
 

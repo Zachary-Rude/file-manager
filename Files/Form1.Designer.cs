@@ -287,31 +287,34 @@
             this.menuItem19,
             this.folderOptionsToolStripMenuItem});
             this.menuItem5.Text = "View";
-            this.menuItem5.Click += new System.EventHandler(this.menuItem5_Click);
             // 
             // menuItem14
             // 
             this.menuItem14.Index = 0;
             this.menuItem14.RadioCheck = true;
             this.menuItem14.Text = "Large icons";
+            this.menuItem14.Click += new System.EventHandler(this.menuItem5_Click);
             // 
             // menuItem16
             // 
             this.menuItem16.Index = 1;
             this.menuItem16.RadioCheck = true;
             this.menuItem16.Text = "Small icons";
+            this.menuItem16.Click += new System.EventHandler(this.menuItem5_Click);
             // 
             // menuItem17
             // 
             this.menuItem17.Index = 2;
             this.menuItem17.RadioCheck = true;
             this.menuItem17.Text = "Details";
+            this.menuItem17.Click += new System.EventHandler(this.menuItem5_Click);
             // 
             // menuItem18
             // 
             this.menuItem18.Index = 3;
             this.menuItem18.RadioCheck = true;
             this.menuItem18.Text = "Tiles";
+            this.menuItem18.Click += new System.EventHandler(this.menuItem5_Click);
             // 
             // menuItem19
             // 
