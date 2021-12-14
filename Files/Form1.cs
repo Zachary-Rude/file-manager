@@ -231,10 +231,6 @@ namespace Files
 
                     view = LV_VIEW_DETAILS;
 
-                else if (sender == menuItem14)
-
-                    view = LV_VIEW_ICON;
-
                 else if (sender == menuItem16)
 
                     view = LV_VIEW_SMALLICON;

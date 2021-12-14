@@ -54,7 +54,6 @@
             this.forwardToolStripMenuItem = new System.Windows.Forms.MenuItem();
             this.menuItem4 = new System.Windows.Forms.MenuItem();
             this.menuItem5 = new System.Windows.Forms.MenuItem();
-            this.menuItem14 = new System.Windows.Forms.MenuItem();
             this.menuItem16 = new System.Windows.Forms.MenuItem();
             this.menuItem17 = new System.Windows.Forms.MenuItem();
             this.menuItem18 = new System.Windows.Forms.MenuItem();
@@ -280,7 +279,6 @@
             // 
             this.menuItem5.Index = 2;
             this.menuItem5.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
-            this.menuItem14,
             this.menuItem16,
             this.menuItem17,
             this.menuItem18,
@@ -288,42 +286,35 @@
             this.folderOptionsToolStripMenuItem});
             this.menuItem5.Text = "View";
             // 
-            // menuItem14
-            // 
-            this.menuItem14.Index = 0;
-            this.menuItem14.RadioCheck = true;
-            this.menuItem14.Text = "Large icons";
-            this.menuItem14.Click += new System.EventHandler(this.menuItem5_Click);
-            // 
             // menuItem16
             // 
-            this.menuItem16.Index = 1;
+            this.menuItem16.Index = 0;
             this.menuItem16.RadioCheck = true;
             this.menuItem16.Text = "Small icons";
             this.menuItem16.Click += new System.EventHandler(this.menuItem5_Click);
             // 
             // menuItem17
             // 
-            this.menuItem17.Index = 2;
+            this.menuItem17.Index = 1;
             this.menuItem17.RadioCheck = true;
             this.menuItem17.Text = "Details";
             this.menuItem17.Click += new System.EventHandler(this.menuItem5_Click);
             // 
             // menuItem18
             // 
-            this.menuItem18.Index = 3;
+            this.menuItem18.Index = 2;
             this.menuItem18.RadioCheck = true;
             this.menuItem18.Text = "Tiles";
             this.menuItem18.Click += new System.EventHandler(this.menuItem5_Click);
             // 
             // menuItem19
             // 
-            this.menuItem19.Index = 4;
+            this.menuItem19.Index = 3;
             this.menuItem19.Text = "-";
             // 
             // folderOptionsToolStripMenuItem
             // 
-            this.folderOptionsToolStripMenuItem.Index = 5;
+            this.folderOptionsToolStripMenuItem.Index = 4;
             this.folderOptionsToolStripMenuItem.Text = "Folder options";
             this.folderOptionsToolStripMenuItem.Click += new System.EventHandler(this.folderOptionsToolStripMenuItem_Click);
             // 
@@ -437,7 +428,6 @@
         private System.Windows.Forms.MenuItem menuItem11;
         private System.Windows.Forms.MenuItem menuItem12;
         private System.Windows.Forms.MenuItem menuItem13;
-        private System.Windows.Forms.MenuItem menuItem14;
         private System.Windows.Forms.MenuItem menuItem16;
         private System.Windows.Forms.MenuItem menuItem17;
         private System.Windows.Forms.MenuItem menuItem18;
