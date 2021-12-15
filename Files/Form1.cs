@@ -89,7 +89,7 @@ namespace Files
 
         private void goToFolderToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            using (FolderBrowserDialog fbd = new FolderBrowserDialog())
+            using (FolderBrowserDialog fbd = new FolderBrowserDialog() { Description = "Select a folder to navigate to." })
             {
                 if (fbd.ShowDialog() == DialogResult.OK)
                 {
@@ -103,7 +103,14 @@ namespace Files
         {
             if (e.KeyValue == 13)
             {
-                fileBrowser.Url = new Uri(txtLocation.Text);
+                try
+                {
+                    fileBrowser.Url = new Uri(txtLocation.Text);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Cannot navigate to folder", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
                 e.Handled = true;
                 e.SuppressKeyPress = true;
             }
