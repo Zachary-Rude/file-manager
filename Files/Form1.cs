@@ -12,115 +12,536 @@ using System.Diagnostics;
 using System.Security.AccessControl;
 using System.Security.Principal;
 using System.Runtime.InteropServices;
+using System.Text.RegularExpressions;
+using System.Collections;
 
 namespace Files
 {
     public partial class Form1 : Form
     {
-        private const int LV_VIEW_ICON = 0x0000;
+        string storedPath;
+        string currentPath;
+        string newPath;
+        string oldPath;
+        bool txtLocationJustEntered = false;
+        List<string> listFiles = new List<string>();
 
-        private const int LV_VIEW_DETAILS = 0x0001;
-
-        private const int LV_VIEW_SMALLICON = 0x0002;
-
-        private const int LV_VIEW_LIST = 0x0003;
-
-        private const int LV_VIEW_TILE = 0x0004;
-
-        private const int EM_HIDEBALLOONTIP = 0x1504;
-
-        private const int LVM_SETVIEW = 0x108E;
-
-        private const string ListViewClassName = "SysListView32";
-
-
-
-        private static readonly HandleRef NullHandleRef = new HandleRef(null, IntPtr.Zero);
-
-
-
-        [DllImport("user32.dll", ExactSpelling = true)]
-
-        private static extern bool EnumChildWindows(HandleRef hwndParent, EnumChildrenCallback lpEnumFunc, HandleRef lParam);
-
-
-
-        [DllImport("user32.dll", CharSet = CharSet.Auto)]
-
-        private static extern int SendMessage(HandleRef hWnd, uint Msg, int wParam, int lParam);
-
-
-
-        [DllImport("user32.dll", CharSet = CharSet.Auto)]
-
-        private static extern uint RealGetWindowClass(IntPtr hwnd, [Out] StringBuilder pszType, uint cchType);
-
-
-
-        private delegate bool EnumChildrenCallback(IntPtr hwnd, IntPtr lParam);
-
-
-
-        private HandleRef listViewHandle;
         public Form1()
         {
             InitializeComponent();
-            btnForward.Enabled = fileBrowser.CanGoForward;
-            btnBack.Enabled = fileBrowser.CanGoBack;
             txtLocation.Text = @"C:\";
-            fileBrowser.Url = new Uri(txtLocation.Text);
+            storedPath = txtLocation.Text;
+            navigateToFolder(txtLocation.Text);
+            listView.View = Properties.Settings.Default.FolderView;
+            menuItem7.Checked = Properties.Settings.Default.LargeIcon;
+            menuItem8.Checked = Properties.Settings.Default.SmallIcon;
+            menuItem9.Checked = Properties.Settings.Default.Details;
+            menuItem14.Checked = Properties.Settings.Default.List;
+            menuItem16.Checked = Properties.Settings.Default.Tile;
+            menuItem15.Checked = Properties.Settings.Default.ShowHiddenFiles;
         }
 
-        private void btnBack_Click(object sender, EventArgs e)
+        public Form1(string pathName) : this()
         {
-            if (fileBrowser.CanGoBack)
+            if (pathName == null)
+                return;
+
+            if (!Directory.Exists(pathName))
             {
-                fileBrowser.GoBack();
+                MessageBox.Show("The folder does not exist", "Cannot open folder", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            try
+            {
+                navigateToFolder(pathName);
+                storedPath = txtLocation.Text;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Cannot open folder", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
-        private void btnForward_Click(object sender, EventArgs e)
+        private void UpdateRecentFolderList()
         {
-            if (fileBrowser.CanGoForward)
+            if (menuItem19.MenuItems.Count > 0)
             {
-                fileBrowser.GoForward();
+                menuItem19.MenuItems.Clear();
+                if (Properties.Settings.Default.RecentFolders.Count > 0)
+                {
+                    int index = 0;
+                    var uniques = Properties.Settings.Default.RecentFolders.Cast<IEnumerable>();
+                    var unique = uniques.Distinct();
+                    foreach (string fldr in unique)
+                    {
+                        if (!string.IsNullOrEmpty(fldr) || !string.IsNullOrWhiteSpace(fldr))
+                        {
+                            index++;
+                            MenuItem item = new MenuItem(fldr);
+                            item.Click += recentFolder_Click;
+                            item.Index = index;
+                            menuItem19.MenuItems.Add(item);
+                        }
+                    }
+                    MenuItem separator = new MenuItem("-");
+                    menuItem19.MenuItems.Add(separator);
+                }
+            }
+            menuItem19.MenuItems.Add(menuClear);
+            if (Properties.Settings.Default.RecentFolders.Count > 0)
+            {
+                menuClear.Enabled = true;
+            }
+            else
+            {
+                menuClear.Enabled = false;
+            }
+        }
+
+        private void radioMenu_Click(object sender, EventArgs e)
+        {
+            if (sender == menuItem7)
+            {
+                Properties.Settings.Default.FolderView = View.LargeIcon;
+                Properties.Settings.Default.LargeIcon = true;
+                Properties.Settings.Default.SmallIcon = false;
+                Properties.Settings.Default.Details = false;
+                Properties.Settings.Default.List = false;
+                Properties.Settings.Default.Tile = false;
+            }
+            else if (sender == menuItem8)
+            {
+                Properties.Settings.Default.FolderView = View.SmallIcon;
+                Properties.Settings.Default.LargeIcon = false;
+                Properties.Settings.Default.SmallIcon = true;
+                Properties.Settings.Default.Details = false;
+                Properties.Settings.Default.List = false;
+                Properties.Settings.Default.Tile = false;
+            }
+            else if (sender == menuItem9)
+            {
+                Properties.Settings.Default.FolderView = View.Details;
+                Properties.Settings.Default.LargeIcon = false;
+                Properties.Settings.Default.SmallIcon = false;
+                Properties.Settings.Default.Details = true;
+                Properties.Settings.Default.List = false;
+                Properties.Settings.Default.Tile = false;
+            }
+            else if (sender == menuItem14)
+            {
+                Properties.Settings.Default.FolderView = View.List;
+                Properties.Settings.Default.LargeIcon = false;
+                Properties.Settings.Default.SmallIcon = false;
+                Properties.Settings.Default.Details = false;
+                Properties.Settings.Default.List = true;
+                Properties.Settings.Default.Tile = false;
+            }
+            else if (sender == menuItem16)
+            {
+                Properties.Settings.Default.FolderView = View.Tile;
+                Properties.Settings.Default.LargeIcon = false;
+                Properties.Settings.Default.SmallIcon = false;
+                Properties.Settings.Default.Details = false;
+                Properties.Settings.Default.List = false;
+                Properties.Settings.Default.Tile = true;
+            }
+
+            Properties.Settings.Default.Save();
+            listView.View = Properties.Settings.Default.FolderView;
+            menuItem7.Checked = Properties.Settings.Default.LargeIcon;
+            menuItem8.Checked = Properties.Settings.Default.SmallIcon;
+            menuItem9.Checked = Properties.Settings.Default.Details;
+            menuItem14.Checked = Properties.Settings.Default.List;
+            menuItem16.Checked = Properties.Settings.Default.Tile;
+        }
+
+        private void navigateToFolder(string path)
+        {
+            oldPath = txtLocation.Text;
+            listFiles.Clear();
+            listView.Items.Clear();
+            DirectoryInfo nodeDirInfo = new DirectoryInfo(path);
+            ListViewItem.ListViewSubItem[] subItems;
+            ListViewItem item = null;
+
+            foreach (DirectoryInfo dir in nodeDirInfo.GetDirectories()
+                .Where(d => !d.Attributes.HasFlag(FileAttributes.Hidden) || Properties.Settings.Default.ShowHiddenFiles))
+            {
+                item = new ListViewItem(dir.Name, 0);
+                subItems = new ListViewItem.ListViewSubItem[]
+                    {new ListViewItem.ListViewSubItem(item, "Folder"),
+             new ListViewItem.ListViewSubItem(item,
+                dir.LastAccessTime.ToShortDateString())};
+                item.SubItems.AddRange(subItems);
+                listView.Items.Add(item);
+                listFiles.Add(dir.FullName);
+            }
+            foreach (FileInfo file in nodeDirInfo.GetFiles()
+                .Where(f => !f.Attributes.HasFlag(FileAttributes.Hidden) || Properties.Settings.Default.ShowHiddenFiles))
+            {
+                string fileType;
+                bool showExtension = true;
+                string fileName;
+                int fileIndex = 1;
+                if (file.Extension == ".py")
+                {
+                    fileIndex = 2;
+                    fileType = "Python File";
+                    showExtension = true;
+                }
+                else if (file.Extension == ".zip")
+                {
+                    fileIndex = 3;
+                    fileType = "Zipfile";
+                    showExtension = true;
+                }
+                else if (file.Extension == ".rar")
+                {
+                    fileType = "RAR Archive";
+                    showExtension = true;
+                }
+                else if (file.Extension == ".png")
+                {
+                    fileType = "PNG Image";
+                    showExtension = true;
+                }
+                else if (file.Extension == ".jpg" || file.Extension == ".jpeg" || file.Extension == ".jfif")
+                {
+                    fileType = "JPEG Image";
+                    showExtension = true;
+                }
+                else if (file.Extension == ".gif")
+                {
+                    fileType = "GIF Image";
+                    showExtension = true;
+                }
+                else if (file.Extension == ".bmp")
+                {
+                    fileType = "Bitmap Image";
+                    showExtension = true;
+                }
+                else if (file.Extension == ".webp")
+                {
+                    fileType = "WebP Image";
+                    showExtension = true;
+                }
+                else if (file.Extension == ".svg")
+                {
+                    fileType = "Scalable Vector Graphics";
+                    showExtension = true;
+                }
+                else if (file.Extension == ".cur")
+                {
+                    fileType = "Static Cursor";
+                    showExtension = true;
+                }
+                else if (file.Extension == ".ani")
+                {
+                    fileType = "Animated Cursor";
+                    showExtension = true;
+                }
+                else if (file.Extension == ".txt")
+                {
+                    fileType = "Text File";
+                    showExtension = true;
+                }
+                else if (file.Extension == ".log")
+                {
+                    fileType = "Log File";
+                    showExtension = true;
+                }
+                else if (file.Extension == ".ico")
+                {
+                    fileType = "Windows Icon";
+                    showExtension = true;
+                }
+                else if (file.Extension == ".lnk")
+                {
+                    fileType = "Windows Shortcut";
+                    showExtension = false;
+                }
+                else if (file.Extension == ".appref-ms")
+                {
+                    fileType = "ClickOnce Application Reference";
+                    showExtension = false;
+                }
+                else if (file.Extension == ".sb3")
+                {
+                    fileType = "Scratch 3.0 Project";
+                    showExtension = true;
+                }
+                else if (file.Extension == ".sb2")
+                {
+                    fileType = "Scratch 2.0 Project";
+                    showExtension = true;
+                }
+                else if (file.Extension == ".sb")
+                {
+                    fileType = "Scratch Project";
+                    showExtension = true;
+                }
+                else if (file.Extension == ".exe")
+                {
+                    fileType = "Windows Executable";
+                    showExtension = true;
+                }
+                else if (file.Extension == ".msi")
+                {
+                    fileType = "Installer";
+                    showExtension = true;
+                }
+                else if (file.Extension == ".com")
+                {
+                    fileType = "DOS App";
+                    showExtension = true;
+                }
+                else if (file.Extension == ".url")
+                {
+                    fileType = "Internet Shortcut";
+                    showExtension = false;
+                }
+                else if (file.Extension == ".mp3")
+                {
+                    fileType = "MP3 Audio";
+                    showExtension = true;
+                }
+                else if (file.Extension == ".mp4")
+                {
+                    fileType = "MP4 Video";
+                    showExtension = true;
+                }
+                else if (file.Extension == ".mpeg")
+                {
+                    fileType = "MPEG Media";
+                    showExtension = true;
+                }
+                else if (file.Extension == ".wav")
+                {
+                    fileType = "Wave Audio";
+                    showExtension = true;
+                }
+                else if (file.Extension == ".mid" || file.Extension == ".midi")
+                {
+                    fileType = "MIDI Audio";
+                    showExtension = true;
+                }
+                else if (file.Extension == ".sln")
+                {
+                    fileType = "Visual Studio Solution File";
+                    showExtension = true;
+                }
+                else if (file.Extension == ".csproj")
+                {
+                    fileType = "Visual Studio C# Project";
+                    showExtension = true;
+                }
+                else if (file.Extension == ".vbproj")
+                {
+                    fileType = "Visual Studio VB.NET Project";
+                    showExtension = true;
+                }
+                else if (file.Extension == ".dll")
+                {
+                    fileType = "Dynamic Link Library";
+                    showExtension = true;
+                }
+                else if (file.Extension == ".cs")
+                {
+                    fileIndex = 4;
+                    fileType = "C# Source File";
+                    showExtension = true;
+                }
+                else if (file.Extension == ".bat" || file.Extension == ".cmd")
+                {
+                    fileType = "Batch File";
+                    showExtension = true;
+                }
+                else if (file.Extension == ".sh")
+                {
+                    fileType = "Shell Script";
+                    showExtension = true;
+                }
+                else if (file.Extension == ".iss")
+                {
+                    fileType = "Inno Setup Script";
+                    showExtension = true;
+                }
+                else if (file.Extension == ".ini")
+                {
+                    fileType = "Windows Configuration File";
+                    showExtension = true;
+                }
+                else if (file.Extension == ".reg")
+                {
+                    fileType = "Windows Registry Entry";
+                    showExtension = true;
+                }
+                else if (file.Extension == ".html" || file.Extension == ".htm")
+                {
+                    fileIndex = 6;
+                    fileType = "HTML Document";
+                    showExtension = true;
+                }
+                else if (file.Extension == ".js")
+                {
+                    fileIndex = 7;
+                    fileType = "JavaScript File";
+                    showExtension = true;
+                }
+                else if (file.Extension == ".pdf")
+                {
+                    fileIndex = 8;
+                    fileType = "PDF Document";
+                    showExtension = true;
+                }
+                else if (file.Extension == ".css")
+                {
+                    fileIndex = 5;
+                    fileType = "CSS File";
+                    showExtension = true;
+                }
+                else
+                {
+                    fileIndex = 1;
+                    if (file.Extension != "")
+                    {
+                        fileType = file.Extension.Replace(".", "").ToUpper() + " File";
+                        showExtension = true;
+                    }
+                    else
+                    {
+                        fileType = "File";
+                        showExtension = true;
+                    }
+                }
+                string[] sizes = { "B", "KB", "MB", "GB", "TB" };
+                double len = file.Length;
+                int order = 0;
+                while (len >= 1024 && order < sizes.Length - 1)
+                {
+                    order++;
+                    len = len / 1024;
+                }
+
+                // Adjust the format string to your preferences. For example "{0:0.#}{1}" would
+                // show a single decimal place, and no space.
+                string result = string.Format("{0:0.##} {1}", len, sizes[order]);
+                if (showExtension)
+                {
+                    fileName = file.Name;
+                }
+                else
+                {
+                    fileName = Path.GetFileNameWithoutExtension(file.Name);
+                }
+                item = new ListViewItem(fileName, fileIndex);
+                subItems = new ListViewItem.ListViewSubItem[]
+                    { new ListViewItem.ListViewSubItem(item, fileType),
+             new ListViewItem.ListViewSubItem(item,
+                file.LastAccessTime.ToShortDateString()),
+             new ListViewItem.ListViewSubItem(item, result)};
+                item.ToolTipText = fileName + "\r\nType: " + fileType + "\r\nSize: " + result + "\r\nDate modified: " + file.LastAccessTime.ToShortDateString();
+                item.SubItems.AddRange(subItems);
+                listView.Items.Add(item);
+                listFiles.Add(file.FullName);
+            }
+
+            listView.Columns[0].AutoResize(ColumnHeaderAutoResizeStyle.None);
+            listView.Columns[0].Width = 165;
+            listView.Columns[1].Width = 105;
+            listView.Columns[3].Width = 70;
+            currentPath = path;
+            txtLocation.Text = currentPath;
+            this.Text = "Index of " + currentPath + " - Files";
+            if (Properties.Settings.Default.RecentFolders.Count > 5)
+            {
+                Properties.Settings.Default.RecentFolders.RemoveAt(0);
+            }
+            Properties.Settings.Default.RecentFolders.Add(currentPath);
+            Properties.Settings.Default.Save();
+            UpdateRecentFolderList();
+        }
+
+        private void listView_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            if (listView.FocusedItem != null)
+            {
+                if (listView.FocusedItem.SubItems[1].Text == "Folder")
+                {
+                    try
+                    {
+                        newPath = listFiles[listView.FocusedItem.Index];
+                        navigateToFolder(newPath);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message, "Location is not available", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        navigateToFolder(txtLocation.Text);
+                    }
+                }
+                else
+                {
+                    try
+                    {
+                        newPath = listFiles[listView.FocusedItem.Index];
+                        Process.Start(newPath);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message, "Cannot open file", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
             }
         }
 
         private void goToFolderToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            using (FolderBrowserDialog fbd = new FolderBrowserDialog() { Description = "Select a folder to navigate to." })
+            using (FolderBrowserDialog fbd = new FolderBrowserDialog() { Description = "Select a folder to navigate to.", ShowNewFolderButton = false })
             {
                 if (fbd.ShowDialog() == DialogResult.OK)
                 {
-                    txtLocation.Text = fbd.SelectedPath;
-                    fileBrowser.Url = new Uri(fbd.SelectedPath);
+                    try
+                    {
+                        txtLocation.Text = fbd.SelectedPath;
+                        navigateToFolder(txtLocation.Text);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message, "Location is not available", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        txtLocation.Text = oldPath;
+                        navigateToFolder(txtLocation.Text);
+                    }
                 }
             }
         }
 
-        private void txtLocation_KeyUp(object sender, KeyEventArgs e)
+        private void txtLocation_KeyPress(object sender, KeyEventArgs e)
         {
-            if (e.KeyValue == 13)
+            if (e.KeyCode == Keys.Enter)
             {
                 try
                 {
-                    fileBrowser.Url = new Uri(txtLocation.Text);
+                    if (Directory.Exists(Path.GetFullPath(txtLocation.Text)))
+                    {
+                        navigateToFolder(Path.GetFullPath(txtLocation.Text));
+                    }
+                    else
+                    {
+                        MessageBox.Show(string.Format("The folder {0} could not be found.", txtLocation.Text), "Location is not available", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        txtLocation.Text = oldPath;
+                        navigateToFolder(txtLocation.Text);
+                    }
+                        
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.Message, "Cannot navigate to folder", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(ex.Message, "Location is not available", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    txtLocation.Text = oldPath;
+                    navigateToFolder(txtLocation.Text);
                 }
-                e.Handled = true;
                 e.SuppressKeyPress = true;
             }
-        }
-
-        private void fileBrowser_Navigated(object sender, WebBrowserNavigatedEventArgs e)
-        {
-            txtLocation.Text = fileBrowser.Url.ToString().Replace("file:///", "").Replace(@"/", @"\");
-            btnForward.Enabled = fileBrowser.CanGoForward;
-            btnBack.Enabled = fileBrowser.CanGoBack;
         }
 
         private void openFileToolStripMenuItem_Click(object sender, EventArgs e)
@@ -137,7 +558,6 @@ namespace Files
         private void newFolderToolStripMenuItem_Click(object sender, EventArgs e)
         {
             DirectoryInfo di = Directory.CreateDirectory(txtLocation.Text + @"\New folder");
-            fileBrowser.Refresh();
             expTree1.Refresh();
         }
 
@@ -147,43 +567,14 @@ namespace Files
             aboutFilesForm.ShowDialog();
         }
 
-        private void backToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            btnBack.PerformClick();
-        }
-
-        private void forwardToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            btnForward.PerformClick();
-        }
-
         private void copyToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            using (OpenFileDialog fileDialog = new OpenFileDialog() { Title = "Select a file to copy" })
-            {
-                if (fileDialog.ShowDialog() == DialogResult.OK)
-                {
-                    File.Copy(Path.GetFullPath(fileDialog.FileName), txtLocation.Text + @"\" + fileDialog.FileName);
-                }
-            }
+            copyToolStripMenuItem.PerformClick();
         }
 
         private void newFileToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            FileStream fs = File.Create(txtLocation.Text + @"\Untitled.txt");
-            fileBrowser.Refresh();
-        }
-
-        private void btnRefresh_Click(object sender, EventArgs e)
-        {
-            fileBrowser.Refresh();
-            expTree1.Refresh();
-        }
-
-        private void folderOptionsToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Process.Start("rundll32.exe", "shell32.dll,Options_RunDLL 0");
-            fileBrowser.Refresh();
+            File.Create(Path.Combine(currentPath, "Untitled.txt"));
         }
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
@@ -211,84 +602,298 @@ namespace Files
             txtLocation.Copy();
         }
 
-        private void navigateToolStripMenuItem_Click(object sender, EventArgs e)
+        private void menuItem11_Click(object sender, EventArgs e)
         {
-            fileBrowser.Navigate(txtLocation.Text);
+            navigateToFolder(oldPath);
         }
 
-        private void menuItem5_Click(object sender, EventArgs e)
+        private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            FindListViewHandle();
-
-
-
-            if (this.listViewHandle.Handle != IntPtr.Zero)
-
+            if (listView.FocusedItem != null)
             {
-
-                // we found windows list view
-
-
-
-                int view = 0;
-
-
-
-                if (sender == menuItem17)
-
-                    view = LV_VIEW_DETAILS;
-
-                else if (sender == menuItem16)
-
-                    view = LV_VIEW_SMALLICON;
-
-                else if (sender == menuItem18)
-
-                    view = LV_VIEW_TILE;
-
-
-
-                SendMessage(this.listViewHandle, LVM_SETVIEW, view, 0);
-
+                if (listView.FocusedItem.SubItems[1].Text == "Folder")
+                {
+                    try
+                    {
+                        newPath = listFiles[listView.FocusedItem.Index];
+                        navigateToFolder(newPath);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message, "Location is not available", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        navigateToFolder(txtLocation.Text);
+                    }
+                }
+                else
+                {
+                    try
+                    {
+                        newPath = listFiles[listView.FocusedItem.Index];
+                        Process.Start(newPath);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message, "Cannot open file", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
             }
         }
 
-        private void FindListViewHandle()
-
+        private void openWithToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
-            this.listViewHandle = NullHandleRef;
-
-
-
-            EnumChildrenCallback lpEnumFunc = new EnumChildrenCallback(EnumChildren);
-
-            EnumChildWindows(new HandleRef(this.fileBrowser, this.fileBrowser.Handle), lpEnumFunc, NullHandleRef);
-
+            if (listView.FocusedItem != null)
+            {
+                newPath = listFiles[listView.FocusedItem.Index];
+                ProcessStartInfo p = new ProcessStartInfo();
+                p.FileName = newPath;
+                p.ErrorDialog = true;
+                Process.Start(p);
+            }
         }
 
-
-
-        private bool EnumChildren(IntPtr hwnd, IntPtr lparam)
-
+        private void contextMenuStrip1_Opening(object sender, CancelEventArgs e)
         {
-
-            StringBuilder sb = new StringBuilder(100);
-
-            RealGetWindowClass(hwnd, sb, 100);
-
-            if (sb.ToString() == ListViewClassName) // is this a windows list view?
-
+            if (listView.FocusedItem != null)
             {
+                if (listView.FocusedItem.SubItems[1].Text == "Folder")
+                {
+                    openInNewWindowToolStripMenuItem.Visible = true;
+                    copyToolStripMenuItem.Visible = false;
+                }
+                else
+                {
+                    openInNewWindowToolStripMenuItem.Visible = false;
+                    copyToolStripMenuItem.Visible = true;
+                }
+                openToolStripMenuItem.Visible = true;
+                toolStripSeparator1.Visible = true;
+                newToolStripMenuItem.Visible = true;
+                toolStripSeparator2.Visible = true;
+                deleteToolStripMenuItem.Visible = true;
+                renameToolStripMenuItem.Visible = true;
+                cutToolStripMenuItem.Visible = true;
+            }
+            else
+            {
+                openInNewWindowToolStripMenuItem.Visible = false;
+                openToolStripMenuItem.Visible = false;
+                toolStripSeparator1.Visible = false;
+                newToolStripMenuItem.Visible = true;
+                copyToolStripMenuItem.Visible = false;
+                toolStripSeparator2.Visible = false;
+                deleteToolStripMenuItem.Visible = false;
+                renameToolStripMenuItem.Visible = false;
+                cutToolStripMenuItem.Visible = false;
+            }
+            e.Cancel = false;
+        }
 
-                // this is a windows list view control
+        private void openInNewWindowToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (listView.FocusedItem != null)
+            {
+                Process.Start(Application.ExecutablePath, listFiles[listView.FocusedItem.Index]);
+            }
+        }
 
-                this.listViewHandle = new HandleRef(null, hwnd);
+        private void textFileToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            newFileToolStripMenuItem.PerformClick();
+        }
 
+        private void folderToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            newFolderToolStripMenuItem.PerformClick();
+        }
+
+        private void copyToolStripMenuItem_Click_1(object sender, EventArgs e)
+        {
+            if (listView.FocusedItem != null)
+            {
+                try
+                {
+                    File.Copy(listFiles[listView.FocusedItem.Index], GetUniqueFilePath(Path.Combine(currentPath, Path.GetFileName(listFiles[listView.FocusedItem.Index]))));
+                    navigateToFolder(currentPath);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Cannot perform file operation", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
+        private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (listView.FocusedItem != null)
+            {
+                try
+                {
+                    if (listView.FocusedItem.SubItems[1].Text == "Folder")
+                    {
+                        Directory.Delete(listFiles[listView.FocusedItem.Index], true);
+                    }
+                    else
+                    {
+                        File.Delete(listFiles[listView.FocusedItem.Index]);
+                    }
+                    navigateToFolder(currentPath);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Cannot perform file operation", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
+        private void cutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (listView.FocusedItem != null)
+            {
+                using (FolderBrowserDialog fbd = new FolderBrowserDialog() { Description = "Select the folder where you want the file to be cut to.", SelectedPath = currentPath, ShowNewFolderButton = false })
+                {
+                   if (fbd.ShowDialog() == DialogResult.OK)
+                    {
+                        try
+                        {
+                            if (listView.FocusedItem.SubItems[1].Text == "Folder")
+                            {
+                                Directory.Move(listFiles[listView.FocusedItem.Index], Path.Combine(fbd.SelectedPath, Path.GetFileName(listFiles[listView.FocusedItem.Index])));
+                                navigateToFolder(currentPath);
+                            }
+                            else
+                            {
+                                File.Move(listFiles[listView.FocusedItem.Index], Path.Combine(fbd.SelectedPath, Path.GetFileName(listFiles[listView.FocusedItem.Index])));
+                                navigateToFolder(currentPath);
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show(ex.Message, "Cannot perform file operation", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+                    }
+                }
+            }
+        }
+
+        private void renameToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (listView.FocusedItem != null)
+            {
+                using (RenameForm renameForm = new RenameForm())
+                {
+                    renameForm.txtFileName.Text = Path.GetFileName(listFiles[listView.FocusedItem.Index]);
+                    if (renameForm.ShowDialog() == DialogResult.OK)
+                    {
+                        try
+                        {
+                            if (listView.FocusedItem.SubItems[1].Text == "Folder")
+                            {
+                                Directory.Move(listFiles[listView.FocusedItem.Index], Path.Combine(currentPath, renameForm.txtFileName.Text));
+                                navigateToFolder(currentPath);
+                            }
+                            else
+                            {
+                                File.Move(listFiles[listView.FocusedItem.Index], Path.Combine(currentPath, renameForm.txtFileName.Text));
+                                navigateToFolder(currentPath);
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show(ex.Message, "Cannot perform file operation", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+                    }
+                }
+            }
+        }
+
+        private void menuItem15_Click(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.ShowHiddenFiles = !Properties.Settings.Default.ShowHiddenFiles;
+            Properties.Settings.Default.Save();
+            menuItem15.Checked = Properties.Settings.Default.ShowHiddenFiles;
+            expTree1.ShowHiddenFolders = Properties.Settings.Default.ShowHiddenFiles;
+            navigateToFolder(currentPath);
+        }
+
+        private void createFolderToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Directory.CreateDirectory(Path.Combine(currentPath, "New folder"));
+            navigateToFolder(currentPath);
+        }
+
+        private void pictureBox1_Click(object sender, EventArgs e)
+        {
+            navigateToFolder(Path.GetFullPath(Path.Combine(currentPath, @"..")));
+        }
+
+        private void txtLocation_Enter(object sender, EventArgs e)
+        {
+            if (!string.IsNullOrEmpty(txtLocation.Text))
+            {
+                txtLocation.SelectAll();
+                txtLocationJustEntered = true;
+            }
+            else
+            {
+                txtLocation.DeselectAll();
+                txtLocationJustEntered = false;
+            }
+        }
+
+        private void txtLocation_Click(object sender, EventArgs e)
+        {
+            if (txtLocationJustEntered)
+            {
+                txtLocation.SelectAll();
             }
 
-            return true;
+            txtLocationJustEntered = false;
+        }
 
+        private static string GetUniqueFilePath(string filePath)
+        {
+            if (File.Exists(filePath))
+            {
+                string folderPath = Path.GetDirectoryName(filePath);
+                string fileName = Path.GetFileNameWithoutExtension(filePath);
+                string fileExtension = Path.GetExtension(filePath);
+                int number = 1;
+
+                Match regex = Regex.Match(fileName, @"^(.+)(\d+)$");
+
+                if (regex.Success)
+                {
+                    fileName = regex.Groups[1].Value;
+                    number = int.Parse(regex.Groups[2].Value);
+                }
+
+                do
+                {
+                    number++;
+                    string newFileName = $"{fileName}{number}{fileExtension}";
+                    filePath = Path.Combine(folderPath, newFileName);
+                }
+                while (File.Exists(filePath));
+            }
+
+            return filePath;
+        }
+
+        private void menuItem17_Click(object sender, EventArgs e)
+        {
+            navigateToFolder(Path.GetFullPath(Path.Combine(currentPath, @"..")));
+        }
+
+        private void recentFolder_Click(object sender, EventArgs e)
+        {
+            navigateToFolder(((MenuItem)sender).Text);
+        }
+
+        private void menuClear_Click(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.RecentFolders.Clear();
+            Properties.Settings.Default.Save();
+            UpdateRecentFolderList();
         }
     }
 }

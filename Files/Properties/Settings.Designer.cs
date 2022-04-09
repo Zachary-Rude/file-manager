@@ -22,5 +22,103 @@ namespace Files.Properties {
                 return defaultInstance;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Details")]
+        public global::System.Windows.Forms.View FolderView {
+            get {
+                return ((global::System.Windows.Forms.View)(this["FolderView"]));
+            }
+            set {
+                this["FolderView"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool LargeIcon {
+            get {
+                return ((bool)(this["LargeIcon"]));
+            }
+            set {
+                this["LargeIcon"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool SmallIcon {
+            get {
+                return ((bool)(this["SmallIcon"]));
+            }
+            set {
+                this["SmallIcon"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool Details {
+            get {
+                return ((bool)(this["Details"]));
+            }
+            set {
+                this["Details"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool List {
+            get {
+                return ((bool)(this["List"]));
+            }
+            set {
+                this["List"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool Tile {
+            get {
+                return ((bool)(this["Tile"]));
+            }
+            set {
+                this["Tile"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool ShowHiddenFiles {
+            get {
+                return ((bool)(this["ShowHiddenFiles"]));
+            }
+            set {
+                this["ShowHiddenFiles"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("<?xml version=\"1.0\" encoding=\"utf-16\"?>\r\n<ArrayOfString xmlns:xsi=\"http://www.w3." +
+            "org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">\r\n  <s" +
+            "tring xsi:nil=\"true\" />\r\n</ArrayOfString>")]
+        public global::System.Collections.Specialized.StringCollection RecentFolders {
+            get {
+                return ((global::System.Collections.Specialized.StringCollection)(this["RecentFolders"]));
+            }
+            set {
+                this["RecentFolders"] = value;
+            }
+        }
     }
 }

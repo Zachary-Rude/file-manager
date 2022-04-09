@@ -10,16 +10,11 @@ using System.Windows.Forms;
 
 namespace Files
 {
-    public partial class AboutFilesForm : Form
+    public partial class RenameForm : Form
     {
-        public AboutFilesForm()
+        public RenameForm()
         {
             InitializeComponent();
-        }
-
-        private void AboutFilesForm_Load(object sender, EventArgs e)
-        {
-
         }
     }
 }

@@ -22,4 +22,4 @@ C:\Users\zacha\source\repos\Files\Files\obj\Debug\Files.exe
 C:\Users\zacha\source\repos\Files\Files\obj\Debug\Files.pdb
 C:\Users\zacha\source\repos\Files\Files\obj\Debug\Files.csproj.CopyComplete
 C:\Users\zacha\source\repos\Files\Files\bin\Debug\ExpTreeLib.dll
-C:\Users\zacha\source\repos\Files\Files\obj\Debug\Files.csprojAssemblyReference.cache
+C:\Users\zacha\source\repos\Files\Files\obj\Debug\Files.RenameForm.resources
