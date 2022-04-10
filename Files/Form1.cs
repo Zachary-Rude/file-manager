@@ -29,6 +29,7 @@ namespace Files
         public Form1()
         {
             InitializeComponent();
+            openWithToolStripMenuItem.Click += this.openWithToolStripMenuItem_Click;
             txtLocation.Text = @"C:\";
             storedPath = txtLocation.Text;
             navigateToFolder(txtLocation.Text);
@@ -39,6 +40,11 @@ namespace Files
             menuItem14.Checked = Properties.Settings.Default.List;
             menuItem16.Checked = Properties.Settings.Default.Tile;
             menuItem15.Checked = Properties.Settings.Default.ShowHiddenFiles;
+        }
+
+        private void OpenWithToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
         }
 
         public Form1(string pathName) : this()
@@ -168,11 +174,23 @@ namespace Files
             foreach (DirectoryInfo dir in nodeDirInfo.GetDirectories()
                 .Where(d => !d.Attributes.HasFlag(FileAttributes.Hidden) || Properties.Settings.Default.ShowHiddenFiles))
             {
+                int itemCount = dir.GetFiles().Count() + dir.GetDirectories().Count();
+                string itemLabel;
+                if (itemCount == 1)
+                {
+                    itemLabel = "item";
+                }
+                else
+                {
+                    itemLabel = "items";
+                }
                 item = new ListViewItem(dir.Name, 0);
                 subItems = new ListViewItem.ListViewSubItem[]
                     {new ListViewItem.ListViewSubItem(item, "Folder"),
              new ListViewItem.ListViewSubItem(item,
-                dir.LastAccessTime.ToShortDateString())};
+                dir.LastAccessTime.ToShortDateString()),
+             new ListViewItem.ListViewSubItem(item, string.Format("{0} {1}", itemCount, itemLabel))};
+                item.ToolTipText = dir.Name + "\r\nType: Folder\r\nSize: " + string.Format("{0} {1}", itemCount, itemLabel) + "\r\nLast Modified: " + dir.LastAccessTime.ToShortDateString();
                 item.SubItems.AddRange(subItems);
                 listView.Items.Add(item);
                 listFiles.Add(dir.FullName);
@@ -184,218 +202,218 @@ namespace Files
                 bool showExtension = true;
                 string fileName;
                 int fileIndex = 1;
-                if (file.Extension == ".py")
+                if (file.Extension.ToLower() == ".py")
                 {
                     fileIndex = 2;
                     fileType = "Python File";
                     showExtension = true;
                 }
-                else if (file.Extension == ".zip")
+                else if (file.Extension.ToLower() == ".zip")
                 {
                     fileIndex = 3;
                     fileType = "Zipfile";
                     showExtension = true;
                 }
-                else if (file.Extension == ".rar")
+                else if (file.Extension.ToLower() == ".rar")
                 {
                     fileType = "RAR Archive";
                     showExtension = true;
                 }
-                else if (file.Extension == ".png")
+                else if (file.Extension.ToLower() == ".png")
                 {
                     fileType = "PNG Image";
                     showExtension = true;
                 }
-                else if (file.Extension == ".jpg" || file.Extension == ".jpeg" || file.Extension == ".jfif")
+                else if (file.Extension.ToLower() == ".jpg" || file.Extension.ToLower() == ".jpeg" || file.Extension.ToLower() == ".jfif")
                 {
                     fileType = "JPEG Image";
                     showExtension = true;
                 }
-                else if (file.Extension == ".gif")
+                else if (file.Extension.ToLower() == ".gif")
                 {
                     fileType = "GIF Image";
                     showExtension = true;
                 }
-                else if (file.Extension == ".bmp")
+                else if (file.Extension.ToLower() == ".bmp")
                 {
                     fileType = "Bitmap Image";
                     showExtension = true;
                 }
-                else if (file.Extension == ".webp")
+                else if (file.Extension.ToLower() == ".webp")
                 {
                     fileType = "WebP Image";
                     showExtension = true;
                 }
-                else if (file.Extension == ".svg")
+                else if (file.Extension.ToLower() == ".svg")
                 {
                     fileType = "Scalable Vector Graphics";
                     showExtension = true;
                 }
-                else if (file.Extension == ".cur")
+                else if (file.Extension.ToLower() == ".cur")
                 {
                     fileType = "Static Cursor";
                     showExtension = true;
                 }
-                else if (file.Extension == ".ani")
+                else if (file.Extension.ToLower() == ".ani")
                 {
                     fileType = "Animated Cursor";
                     showExtension = true;
                 }
-                else if (file.Extension == ".txt")
+                else if (file.Extension.ToLower() == ".txt")
                 {
                     fileType = "Text File";
                     showExtension = true;
                 }
-                else if (file.Extension == ".log")
+                else if (file.Extension.ToLower() == ".log")
                 {
                     fileType = "Log File";
                     showExtension = true;
                 }
-                else if (file.Extension == ".ico")
+                else if (file.Extension.ToLower() == ".ico")
                 {
                     fileType = "Windows Icon";
                     showExtension = true;
                 }
-                else if (file.Extension == ".lnk")
+                else if (file.Extension.ToLower() == ".lnk")
                 {
                     fileType = "Windows Shortcut";
                     showExtension = false;
                 }
-                else if (file.Extension == ".appref-ms")
+                else if (file.Extension.ToLower() == ".appref-ms")
                 {
                     fileType = "ClickOnce Application Reference";
                     showExtension = false;
                 }
-                else if (file.Extension == ".sb3")
+                else if (file.Extension.ToLower() == ".sb3")
                 {
                     fileType = "Scratch 3.0 Project";
                     showExtension = true;
                 }
-                else if (file.Extension == ".sb2")
+                else if (file.Extension.ToLower() == ".sb2")
                 {
                     fileType = "Scratch 2.0 Project";
                     showExtension = true;
                 }
-                else if (file.Extension == ".sb")
+                else if (file.Extension.ToLower() == ".sb")
                 {
                     fileType = "Scratch Project";
                     showExtension = true;
                 }
-                else if (file.Extension == ".exe")
+                else if (file.Extension.ToLower() == ".exe")
                 {
                     fileType = "Windows Executable";
                     showExtension = true;
                 }
-                else if (file.Extension == ".msi")
+                else if (file.Extension.ToLower() == ".msi")
                 {
                     fileType = "Installer";
                     showExtension = true;
                 }
-                else if (file.Extension == ".com")
+                else if (file.Extension.ToLower() == ".com")
                 {
                     fileType = "DOS App";
                     showExtension = true;
                 }
-                else if (file.Extension == ".url")
+                else if (file.Extension.ToLower() == ".url")
                 {
                     fileType = "Internet Shortcut";
                     showExtension = false;
                 }
-                else if (file.Extension == ".mp3")
+                else if (file.Extension.ToLower() == ".mp3")
                 {
                     fileType = "MP3 Audio";
                     showExtension = true;
                 }
-                else if (file.Extension == ".mp4")
+                else if (file.Extension.ToLower() == ".mp4")
                 {
                     fileType = "MP4 Video";
                     showExtension = true;
                 }
-                else if (file.Extension == ".mpeg")
+                else if (file.Extension.ToLower() == ".mpeg")
                 {
                     fileType = "MPEG Media";
                     showExtension = true;
                 }
-                else if (file.Extension == ".wav")
+                else if (file.Extension.ToLower() == ".wav")
                 {
                     fileType = "Wave Audio";
                     showExtension = true;
                 }
-                else if (file.Extension == ".mid" || file.Extension == ".midi")
+                else if (file.Extension.ToLower() == ".mid" || file.Extension.ToLower() == ".midi")
                 {
                     fileType = "MIDI Audio";
                     showExtension = true;
                 }
-                else if (file.Extension == ".sln")
+                else if (file.Extension.ToLower() == ".sln")
                 {
                     fileType = "Visual Studio Solution File";
                     showExtension = true;
                 }
-                else if (file.Extension == ".csproj")
+                else if (file.Extension.ToLower() == ".csproj")
                 {
                     fileType = "Visual Studio C# Project";
                     showExtension = true;
                 }
-                else if (file.Extension == ".vbproj")
+                else if (file.Extension.ToLower() == ".vbproj")
                 {
                     fileType = "Visual Studio VB.NET Project";
                     showExtension = true;
                 }
-                else if (file.Extension == ".dll")
+                else if (file.Extension.ToLower() == ".dll")
                 {
                     fileType = "Dynamic Link Library";
                     showExtension = true;
                 }
-                else if (file.Extension == ".cs")
+                else if (file.Extension.ToLower() == ".cs")
                 {
                     fileIndex = 4;
                     fileType = "C# Source File";
                     showExtension = true;
                 }
-                else if (file.Extension == ".bat" || file.Extension == ".cmd")
+                else if (file.Extension.ToLower() == ".bat" || file.Extension.ToLower() == ".cmd")
                 {
                     fileType = "Batch File";
                     showExtension = true;
                 }
-                else if (file.Extension == ".sh")
+                else if (file.Extension.ToLower() == ".sh")
                 {
                     fileType = "Shell Script";
                     showExtension = true;
                 }
-                else if (file.Extension == ".iss")
+                else if (file.Extension.ToLower() == ".iss")
                 {
                     fileType = "Inno Setup Script";
                     showExtension = true;
                 }
-                else if (file.Extension == ".ini")
+                else if (file.Extension.ToLower() == ".ini")
                 {
                     fileType = "Windows Configuration File";
                     showExtension = true;
                 }
-                else if (file.Extension == ".reg")
+                else if (file.Extension.ToLower() == ".reg")
                 {
                     fileType = "Windows Registry Entry";
                     showExtension = true;
                 }
-                else if (file.Extension == ".html" || file.Extension == ".htm")
+                else if (file.Extension.ToLower() == ".html" || file.Extension.ToLower() == ".htm")
                 {
                     fileIndex = 6;
                     fileType = "HTML Document";
                     showExtension = true;
                 }
-                else if (file.Extension == ".js")
+                else if (file.Extension.ToLower() == ".js")
                 {
                     fileIndex = 7;
                     fileType = "JavaScript File";
                     showExtension = true;
                 }
-                else if (file.Extension == ".pdf")
+                else if (file.Extension.ToLower() == ".pdf")
                 {
                     fileIndex = 8;
                     fileType = "PDF Document";
                     showExtension = true;
                 }
-                else if (file.Extension == ".css")
+                else if (file.Extension.ToLower() == ".css")
                 {
                     fileIndex = 5;
                     fileType = "CSS File";
@@ -404,7 +422,7 @@ namespace Files
                 else
                 {
                     fileIndex = 1;
-                    if (file.Extension != "")
+                    if (file.Extension.ToLower() != "")
                     {
                         fileType = file.Extension.Replace(".", "").ToUpper() + " File";
                         showExtension = true;
@@ -441,7 +459,7 @@ namespace Files
              new ListViewItem.ListViewSubItem(item,
                 file.LastAccessTime.ToShortDateString()),
              new ListViewItem.ListViewSubItem(item, result)};
-                item.ToolTipText = fileName + "\r\nType: " + fileType + "\r\nSize: " + result + "\r\nDate modified: " + file.LastAccessTime.ToShortDateString();
+                item.ToolTipText = fileName + "\r\nType: " + fileType + "\r\nSize: " + result + "\r\nLast Modified: " + file.LastAccessTime.ToShortDateString();
                 item.SubItems.AddRange(subItems);
                 listView.Items.Add(item);
                 listFiles.Add(file.FullName);
@@ -540,25 +558,28 @@ namespace Files
                     txtLocation.Text = oldPath;
                     navigateToFolder(txtLocation.Text);
                 }
+                expTree1.Focus();
                 e.SuppressKeyPress = true;
             }
         }
 
         private void openFileToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            using (OpenFileDialog ofd = new OpenFileDialog())
-            {
-                if (ofd.ShowDialog() == DialogResult.OK)
-                {
-                    Process.Start(ofd.FileName);
-                }
-            }
+            openToolStripMenuItem.PerformClick();
         }
 
         private void newFolderToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            DirectoryInfo di = Directory.CreateDirectory(txtLocation.Text + @"\New folder");
+            try
+            {
+                DirectoryInfo di = Directory.CreateDirectory(GetUniqueFilePath(Path.Combine(txtLocation.Text, @"\New folder")));
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error while creating folder", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
             expTree1.Refresh();
+            navigateToFolder(currentPath);
         }
 
         private void aboutFilesToolStripMenuItem_Click(object sender, EventArgs e)
@@ -574,7 +595,15 @@ namespace Files
 
         private void newFileToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            File.Create(Path.Combine(currentPath, "Untitled.txt"));
+            try
+            {
+                File.Create(GetUniqueFilePath(Path.Combine(currentPath, "Untitled.txt")));
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error while creating file", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            navigateToFolder(currentPath);
         }
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
@@ -639,17 +668,7 @@ namespace Files
             }
         }
 
-        private void openWithToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (listView.FocusedItem != null)
-            {
-                newPath = listFiles[listView.FocusedItem.Index];
-                ProcessStartInfo p = new ProcessStartInfo();
-                p.FileName = newPath;
-                p.ErrorDialog = true;
-                Process.Start(p);
-            }
-        }
+
 
         private void contextMenuStrip1_Opening(object sender, CancelEventArgs e)
         {
@@ -659,11 +678,13 @@ namespace Files
                 {
                     openInNewWindowToolStripMenuItem.Visible = true;
                     copyToolStripMenuItem.Visible = false;
+                    openWithToolStripMenuItem.Visible = false;
                 }
                 else
                 {
                     openInNewWindowToolStripMenuItem.Visible = false;
                     copyToolStripMenuItem.Visible = true;
+                    openWithToolStripMenuItem.Visible = true;
                 }
                 openToolStripMenuItem.Visible = true;
                 toolStripSeparator1.Visible = true;
@@ -676,6 +697,7 @@ namespace Files
             else
             {
                 openInNewWindowToolStripMenuItem.Visible = false;
+                openWithToolStripMenuItem.Visible = false;
                 openToolStripMenuItem.Visible = false;
                 toolStripSeparator1.Visible = false;
                 newToolStripMenuItem.Visible = true;
@@ -719,6 +741,7 @@ namespace Files
                 {
                     MessageBox.Show(ex.Message, "Cannot perform file operation", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
+                navigateToFolder(currentPath);
             }
         }
 
@@ -817,7 +840,15 @@ namespace Files
 
         private void createFolderToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Directory.CreateDirectory(Path.Combine(currentPath, "New folder"));
+            try
+            {
+                Directory.CreateDirectory(GetUniqueFilePath(Path.Combine(currentPath, "New folder")));
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error while creating folder", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            expTree1.Refresh();
             navigateToFolder(currentPath);
         }
 
@@ -850,8 +881,14 @@ namespace Files
             txtLocationJustEntered = false;
         }
 
+        /// <summary>
+        /// Generates a file name that, if already used by another file within the same folder, has a number directly before the file extension.
+        /// </summary>
+        /// <param name="filePath"></param>
+        /// <returns>String</returns>
         private static string GetUniqueFilePath(string filePath)
         {
+            // Code (mostly) from https://stackoverflow.com/a/22373595/16121348 (modified a little bit here by me)
             if (File.Exists(filePath))
             {
                 string folderPath = Path.GetDirectoryName(filePath);
@@ -894,6 +931,28 @@ namespace Files
             Properties.Settings.Default.RecentFolders.Clear();
             Properties.Settings.Default.Save();
             UpdateRecentFolderList();
+        }
+
+        private void openWithToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (listView.FocusedItem != null)
+            {
+                try
+                {
+                    ShowOpenWithDialog(listFiles[listView.FocusedItem.Index]);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Error while opening file", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
+        private static void ShowOpenWithDialog(string path)
+        {
+            var args = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.System), "shell32.dll");
+            args += ",OpenAs_RunDLL " + path;
+            Process.Start("rundll32.exe", args);
         }
     }
 }

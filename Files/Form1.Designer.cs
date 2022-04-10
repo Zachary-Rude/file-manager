@@ -36,6 +36,8 @@
             this.newFileToolStripMenuItem = new System.Windows.Forms.MenuItem();
             this.newFolderToolStripMenuItem = new System.Windows.Forms.MenuItem();
             this.openFileToolStripMenuItem = new System.Windows.Forms.MenuItem();
+            this.menuItem19 = new System.Windows.Forms.MenuItem();
+            this.menuClear = new System.Windows.Forms.MenuItem();
             this.menuItem2 = new System.Windows.Forms.MenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.MenuItem();
             this.menuItem3 = new System.Windows.Forms.MenuItem();
@@ -49,14 +51,19 @@
             this.menuItem11 = new System.Windows.Forms.MenuItem();
             this.menuItem15 = new System.Windows.Forms.MenuItem();
             this.menuItem5 = new System.Windows.Forms.MenuItem();
+            this.menuItem17 = new System.Windows.Forms.MenuItem();
+            this.menuItem18 = new System.Windows.Forms.MenuItem();
             this.menuItem10 = new System.Windows.Forms.MenuItem();
             this.menuItem12 = new System.Windows.Forms.MenuItem();
             this.menuItem13 = new System.Windows.Forms.MenuItem();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.txtLocation = new System.Windows.Forms.TextBox();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openInNewWindowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.openWithToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.newToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.textFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -76,18 +83,14 @@
             this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.menuItem17 = new System.Windows.Forms.MenuItem();
-            this.menuItem18 = new System.Windows.Forms.MenuItem();
-            this.menuItem19 = new System.Windows.Forms.MenuItem();
-            this.menuClear = new System.Windows.Forms.MenuItem();
             this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.contextMenuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // mainMenu1
@@ -135,6 +138,19 @@
             this.openFileToolStripMenuItem.Index = 1;
             this.openFileToolStripMenuItem.Text = "Open file";
             this.openFileToolStripMenuItem.Click += new System.EventHandler(this.openFileToolStripMenuItem_Click);
+            // 
+            // menuItem19
+            // 
+            this.menuItem19.Index = 2;
+            this.menuItem19.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
+            this.menuClear});
+            this.menuItem19.Text = "Recent folders";
+            // 
+            // menuClear
+            // 
+            this.menuClear.Index = 0;
+            this.menuClear.Text = "Clear";
+            this.menuClear.Click += new System.EventHandler(this.menuClear_Click);
             // 
             // menuItem2
             // 
@@ -228,6 +244,18 @@
             this.menuItem10});
             this.menuItem5.Text = "Go";
             // 
+            // menuItem17
+            // 
+            this.menuItem17.Index = 0;
+            this.menuItem17.Shortcut = System.Windows.Forms.Shortcut.AltUpArrow;
+            this.menuItem17.Text = "Up";
+            this.menuItem17.Click += new System.EventHandler(this.menuItem17_Click);
+            // 
+            // menuItem18
+            // 
+            this.menuItem18.Index = 1;
+            this.menuItem18.Text = "-";
+            // 
             // menuItem10
             // 
             this.menuItem10.Index = 2;
@@ -244,7 +272,8 @@
             // menuItem13
             // 
             this.menuItem13.Index = 0;
-            this.menuItem13.Text = "About";
+            this.menuItem13.Shortcut = System.Windows.Forms.Shortcut.ShiftF1;
+            this.menuItem13.Text = "About Files";
             this.menuItem13.Click += new System.EventHandler(this.aboutFilesToolStripMenuItem_Click);
             // 
             // panel1
@@ -253,12 +282,24 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panel1.BackColor = System.Drawing.SystemColors.Window;
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel1.Controls.Add(this.pictureBox1);
+            this.panel1.Controls.Add(this.pictureBox2);
             this.panel1.Controls.Add(this.txtLocation);
-            this.panel1.Location = new System.Drawing.Point(12, 0);
+            this.panel1.Location = new System.Drawing.Point(36, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(984, 23);
+            this.panel1.Size = new System.Drawing.Size(960, 23);
             this.panel1.TabIndex = 1;
+            // 
+            // pictureBox2
+            // 
+            this.pictureBox2.BackColor = System.Drawing.Color.Transparent;
+            this.pictureBox2.Image = global::Files.Properties.Resources.folder;
+            this.pictureBox2.Location = new System.Drawing.Point(-1, -1);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Padding = new System.Windows.Forms.Padding(3);
+            this.pictureBox2.Size = new System.Drawing.Size(23, 23);
+            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox2.TabIndex = 3;
+            this.pictureBox2.TabStop = false;
             // 
             // txtLocation
             // 
@@ -269,7 +310,7 @@
             this.txtLocation.Location = new System.Drawing.Point(21, 3);
             this.txtLocation.Multiline = true;
             this.txtLocation.Name = "txtLocation";
-            this.txtLocation.Size = new System.Drawing.Size(958, 18);
+            this.txtLocation.Size = new System.Drawing.Size(934, 18);
             this.txtLocation.TabIndex = 1;
             this.txtLocation.TabStop = false;
             this.txtLocation.WordWrap = false;
@@ -277,11 +318,25 @@
             this.txtLocation.Enter += new System.EventHandler(this.txtLocation_Enter);
             this.txtLocation.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtLocation_KeyPress);
             // 
+            // pictureBox1
+            // 
+            this.pictureBox1.BackColor = System.Drawing.Color.Transparent;
+            this.pictureBox1.Image = global::Files.Properties.Resources.BrowserUp;
+            this.pictureBox1.Location = new System.Drawing.Point(7, 0);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(23, 23);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.pictureBox1.TabIndex = 2;
+            this.pictureBox1.TabStop = false;
+            this.toolTip1.SetToolTip(this.pictureBox1, "Up");
+            this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
+            // 
             // contextMenuStrip1
             // 
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.openToolStripMenuItem,
             this.openInNewWindowToolStripMenuItem,
+            this.openWithToolStripMenuItem,
             this.toolStripSeparator1,
             this.newToolStripMenuItem,
             this.cutToolStripMenuItem,
@@ -291,7 +346,7 @@
             this.deleteToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-            this.contextMenuStrip1.Size = new System.Drawing.Size(187, 170);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(187, 192);
             this.contextMenuStrip1.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip1_Opening);
             // 
             // openToolStripMenuItem
@@ -307,6 +362,13 @@
             this.openInNewWindowToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
             this.openInNewWindowToolStripMenuItem.Text = "Open in new window";
             this.openInNewWindowToolStripMenuItem.Click += new System.EventHandler(this.openInNewWindowToolStripMenuItem_Click);
+            // 
+            // openWithToolStripMenuItem
+            // 
+            this.openWithToolStripMenuItem.Name = "openWithToolStripMenuItem";
+            this.openWithToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
+            this.openWithToolStripMenuItem.Text = "Open with...";
+            this.openWithToolStripMenuItem.Click += new System.EventHandler(this.openWithToolStripMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
@@ -416,6 +478,7 @@
             this.splitContainer1.Panel2.Controls.Add(this.listView);
             this.splitContainer1.Size = new System.Drawing.Size(1012, 558);
             this.splitContainer1.SplitterDistance = 205;
+            this.splitContainer1.SplitterWidth = 2;
             this.splitContainer1.TabIndex = 2;
             this.splitContainer1.TabStop = false;
             // 
@@ -449,7 +512,7 @@
             this.listView.Location = new System.Drawing.Point(0, 0);
             this.listView.Name = "listView";
             this.listView.ShowItemToolTips = true;
-            this.listView.Size = new System.Drawing.Size(803, 558);
+            this.listView.Size = new System.Drawing.Size(805, 558);
             this.listView.SmallImageList = this.imageList1;
             this.listView.TabIndex = 3;
             this.listView.TabStop = false;
@@ -477,48 +540,11 @@
             this.columnHeader4.Text = "Size";
             this.columnHeader4.Width = 70;
             // 
-            // pictureBox1
-            // 
-            this.pictureBox1.BackColor = System.Drawing.Color.Transparent;
-            this.pictureBox1.Image = global::Files.Properties.Resources.BrowserUp;
-            this.pictureBox1.Location = new System.Drawing.Point(-1, -1);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(23, 23);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
-            this.pictureBox1.TabIndex = 2;
-            this.pictureBox1.TabStop = false;
-            this.toolTip1.SetToolTip(this.pictureBox1, "Up");
-            this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
-            // 
-            // menuItem17
-            // 
-            this.menuItem17.Index = 0;
-            this.menuItem17.Shortcut = System.Windows.Forms.Shortcut.AltUpArrow;
-            this.menuItem17.Text = "Up";
-            this.menuItem17.Click += new System.EventHandler(this.menuItem17_Click);
-            // 
-            // menuItem18
-            // 
-            this.menuItem18.Index = 1;
-            this.menuItem18.Text = "-";
-            // 
-            // menuItem19
-            // 
-            this.menuItem19.Index = 2;
-            this.menuItem19.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
-            this.menuClear});
-            this.menuItem19.Text = "Recent folders";
-            // 
-            // menuClear
-            // 
-            this.menuClear.Index = 0;
-            this.menuClear.Text = "Clear";
-            this.menuClear.Click += new System.EventHandler(this.menuClear_Click);
-            // 
             // Form1
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.ClientSize = new System.Drawing.Size(1008, 585);
+            this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.panel1);
             this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -528,12 +554,13 @@
             this.Text = "Files";
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.contextMenuStrip1.ResumeLayout(false);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -590,6 +617,8 @@
         private System.Windows.Forms.MenuItem menuItem18;
         private System.Windows.Forms.MenuItem menuItem19;
         private System.Windows.Forms.MenuItem menuClear;
+        private System.Windows.Forms.PictureBox pictureBox2;
+        private System.Windows.Forms.ToolStripMenuItem openWithToolStripMenuItem;
     }
 }
 

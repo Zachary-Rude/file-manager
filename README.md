@@ -1,6 +1,6 @@
 # **Zach, Inc. Files: Manage files without Explorer.**
 
-Zach, Inc. Files (not to be confused for every other file manager that is called Files) is a more advanced file manager for Windows, written in C# and designed as a replacement for the older, discontinued Zach, Inc. Files that was hosted at https://github.com/Zachary-Rude/files and written in VB.NET, and as a free and open-source alternative to Windows Explorer.
+Zach, Inc. Files (not to be confused with every other file manager that is called Files) is a more advanced file manager for Windows, written in C# and designed as a replacement for the older, discontinued Zach, Inc. Files that was hosted at https://github.com/Zachary-Rude/files and written in VB.NET, and as a free and open-source alternative to Windows Explorer.
 
 ## __Features__
 The new Zach, Inc. Files includes a whole bazooka of new features, many of which were not included with the old Files. They include:
