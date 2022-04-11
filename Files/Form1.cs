@@ -419,6 +419,11 @@ namespace Files
                     fileType = "CSS File";
                     showExtension = true;
                 }
+                else if (file.Extension.ToLower() == ".bak")
+                {
+                    fileType = "Backup File";
+                    showExtension = true;
+                }
                 else
                 {
                     fileIndex = 1;
@@ -597,7 +602,7 @@ namespace Files
         {
             try
             {
-                File.Create(GetUniqueFilePath(Path.Combine(currentPath, "Untitled.txt")));
+                File.Create(GetUniqueFilePath(Path.Combine(currentPath, "Untitled.txt"))).Close();
             }
             catch (Exception ex)
             {
@@ -749,21 +754,24 @@ namespace Files
         {
             if (listView.FocusedItem != null)
             {
-                try
+                if (MessageBox.Show("Are you sure you want to permanently delete this file/folder?", "Confirm Delete", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
-                    if (listView.FocusedItem.SubItems[1].Text == "Folder")
+                    try
                     {
-                        Directory.Delete(listFiles[listView.FocusedItem.Index], true);
+                        if (listView.FocusedItem.SubItems[1].Text == "Folder")
+                        {
+                            Directory.Delete(listFiles[listView.FocusedItem.Index], true);
+                        }
+                        else
+                        {
+                            File.Delete(listFiles[listView.FocusedItem.Index]);
+                        }
+                        navigateToFolder(currentPath);
                     }
-                    else
+                    catch (Exception ex)
                     {
-                        File.Delete(listFiles[listView.FocusedItem.Index]);
+                        MessageBox.Show(ex.Message, "Cannot perform file operation", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
-                    navigateToFolder(currentPath);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message, "Cannot perform file operation", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }
@@ -923,7 +931,15 @@ namespace Files
 
         private void recentFolder_Click(object sender, EventArgs e)
         {
-            navigateToFolder(((MenuItem)sender).Text);
+            try
+            {
+                navigateToFolder(((MenuItem)sender).Text);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Cannot navigate to folder", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                navigateToFolder(currentPath);
+            }
         }
 
         private void menuClear_Click(object sender, EventArgs e)
@@ -953,6 +969,25 @@ namespace Files
             var args = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.System), "shell32.dll");
             args += ",OpenAs_RunDLL " + path;
             Process.Start("rundll32.exe", args);
+        }
+
+        private void listView_ItemDrag(object sender, ItemDragEventArgs e)
+        {
+            List<string> selection = new List<string>();
+
+            foreach (ListViewItem item in listView.SelectedItems)
+            {
+                int imgIndex = item.Index;
+                selection.Add(listFiles[imgIndex]);
+            }
+
+            DataObject data = new DataObject(DataFormats.FileDrop, selection.ToArray());
+            DoDragDrop(data, DragDropEffects.Copy);
+        }
+
+        private void menuItem21_Click(object sender, EventArgs e)
+        {
+            navigateToFolder(currentPath);
         }
     }
 }

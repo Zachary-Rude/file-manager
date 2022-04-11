@@ -83,6 +83,8 @@
             this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.menuItem20 = new System.Windows.Forms.MenuItem();
+            this.menuItem21 = new System.Windows.Forms.MenuItem();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -186,7 +188,9 @@
             this.menuItem14,
             this.menuItem16,
             this.menuItem11,
-            this.menuItem15});
+            this.menuItem15,
+            this.menuItem20,
+            this.menuItem21});
             this.menuItem6.Text = "View";
             // 
             // menuItem7
@@ -429,6 +433,7 @@
             // deleteToolStripMenuItem
             // 
             this.deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
+            this.deleteToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.Delete;
             this.deleteToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
             this.deleteToolStripMenuItem.Text = "Delete";
             this.deleteToolStripMenuItem.Click += new System.EventHandler(this.deleteToolStripMenuItem_Click);
@@ -508,6 +513,7 @@
             this.listView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listView.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.listView.HideSelection = false;
+            this.listView.LabelWrap = false;
             this.listView.LargeImageList = this.imageList2;
             this.listView.Location = new System.Drawing.Point(0, 0);
             this.listView.Name = "listView";
@@ -518,6 +524,7 @@
             this.listView.TabStop = false;
             this.listView.UseCompatibleStateImageBehavior = false;
             this.listView.View = System.Windows.Forms.View.Details;
+            this.listView.ItemDrag += new System.Windows.Forms.ItemDragEventHandler(this.listView_ItemDrag);
             this.listView.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.listView_MouseDoubleClick);
             // 
             // columnHeader1
@@ -539,6 +546,18 @@
             // 
             this.columnHeader4.Text = "Size";
             this.columnHeader4.Width = 70;
+            // 
+            // menuItem20
+            // 
+            this.menuItem20.Index = 7;
+            this.menuItem20.Text = "-";
+            // 
+            // menuItem21
+            // 
+            this.menuItem21.Index = 8;
+            this.menuItem21.Shortcut = System.Windows.Forms.Shortcut.CtrlR;
+            this.menuItem21.Text = "Refresh";
+            this.menuItem21.Click += new System.EventHandler(this.menuItem21_Click);
             // 
             // Form1
             // 
@@ -619,6 +638,8 @@
         private System.Windows.Forms.MenuItem menuClear;
         private System.Windows.Forms.PictureBox pictureBox2;
         private System.Windows.Forms.ToolStripMenuItem openWithToolStripMenuItem;
+        private System.Windows.Forms.MenuItem menuItem20;
+        private System.Windows.Forms.MenuItem menuItem21;
     }
 }
 

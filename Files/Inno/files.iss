@@ -13,13 +13,14 @@ AppVersion={#MyAppVersion}
 ;AppVerName={#MyAppName} {#MyAppVersion}
 AppPublisher={#MyAppPublisher}
 DefaultDirName={autopf}\{#MyAppPublisher}\{#MyAppName}
-DisableProgramGroupPage=yes
+DisableProgramGroupPage=no
+DefaultGroupName=Files
 LicenseFile=C:\Users\zacha\Documents\License Agreement.rtf
 ; Uncomment the following line to run in non administrative install mode (install for current user only.)
 ;PrivilegesRequired=lowest
 OutputDir=C:\Users\zacha\source\repos\Files\Files\Inno
 OutputBaseFilename=Files_{#MyAppFileNameVersion}_Setup
-SetupIconFile=C:\Users\zacha\files.ico
+SetupIconFile=compiler:SetupClassicIcon.ico
 Compression=lzma
 SolidCompression=yes
 WizardStyle=classic
@@ -59,6 +60,7 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon} (recommended)"; GroupDescription: "{cm:AdditionalIcons}"
+Name: "uninsicon"; Description: "Create an Uninstall icon in Start menu (recommended)"; GroupDescription: "{cm:AdditionalIcons}"
 
 [Files]
 Source: "C:\Users\zacha\source\repos\Files\Files\bin\Debug\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
@@ -74,8 +76,9 @@ SetupAppTitle=%1 Setup
 BeveledLabel=Powered by Inno Setup
 
 [Icons]
-Name: "{autoprograms}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
+Name: "{group}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
 Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: desktopicon
+Name: "{group}\{cm:UninstallProgram, {#MyAppName}}"; Filename: "{uninstallexe}"; Tasks: uninsicon
 
 [Run]
 Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent
