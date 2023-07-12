@@ -156,6 +156,7 @@
     <Compile Include="RenameForm.Designer.cs">
       <DependentUpon>RenameForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="TransferProgress.cs" />
     <EmbeddedResource Include="AboutFilesForm.resx">
       <DependentUpon>AboutFilesForm.cs</DependentUpon>
     </EmbeddedResource>
