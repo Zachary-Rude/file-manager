@@ -132,6 +132,7 @@
       <DependentUpon>createFileForm.cs</DependentUpon>
     </Compile>
     <Compile Include="FileInfoExtensions.cs" />
+    <Compile Include="FileTransferManager.cs" />
     <Compile Include="NativeToolStripRenderer.cs" />
     <Compile Include="NoSelectionListView.cs">
       <SubType>Component</SubType>
