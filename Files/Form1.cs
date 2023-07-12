@@ -1166,6 +1166,18 @@ namespace Files
             }
         }
 
+        public void InvokeIfNeeded(Action action)
+        {
+            if (this.InvokeRequired)
+            {
+                this.BeginInvoke(action);
+            }
+            else
+            {
+                action.Invoke();
+            }
+        }
+
         [Flags]
         public enum ClipboardDragDropEffects
         {
