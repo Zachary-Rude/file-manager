@@ -84,12 +84,6 @@ namespace Files
             if (pathName == null)
                 return;
 
-            if (!Directory.Exists(pathName))
-            {
-                MessageBox.Show("The folder does not exist", "Cannot open folder", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-
             try
             {
                 navigateToFolder(pathName);
