@@ -205,6 +205,8 @@
     <Content Include="Resources\Cut_16x.png" />
     <Content Include="Resources\drive.ico" />
     <Content Include="Resources\file.ico" />
+    <Content Include="Resources\files.ico" />
+    <Content Include="Resources\files.png" />
     <Content Include="Resources\folder.png" />
     <Content Include="Resources\ic_csharp.png" />
     <Content Include="Resources\ic_css.png" />
