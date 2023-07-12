@@ -59,6 +59,7 @@ namespace Files
         {
             InitializeComponent();
             this.MinimumSize = new Size(0, 0);
+            this.Icon = Properties.Resources.filesicon;
             openWithToolStripMenuItem.Click += this.openWithToolStripMenuItem_Click;
             contextMenuStrip1.Renderer = new ToolStripAeroRenderer();
             navigateToFolder(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile));
