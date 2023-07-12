@@ -345,7 +345,7 @@
             // pictureBox2
             // 
             this.pictureBox2.BackColor = System.Drawing.Color.Transparent;
-            this.pictureBox2.Image = global::Files.Properties.Resources.folder;
+            this.pictureBox2.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox2.Image")));
             this.pictureBox2.Location = new System.Drawing.Point(-1, -1);
             this.pictureBox2.Name = "pictureBox2";
             this.pictureBox2.Padding = new System.Windows.Forms.Padding(3);
@@ -564,6 +564,9 @@
             this.imageListTree.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageListTree.ImageStream")));
             this.imageListTree.TransparentColor = System.Drawing.Color.Transparent;
             this.imageListTree.Images.SetKeyName(0, "computer.ico");
+            this.imageListTree.Images.SetKeyName(1, "drive.ico");
+            this.imageListTree.Images.SetKeyName(2, "windrive.ico");
+            this.imageListTree.Images.SetKeyName(3, "folder.ico");
             // 
             // label1
             // 

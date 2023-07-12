@@ -163,7 +163,7 @@ namespace Files
             treeView1.Nodes.Clear();
 
             // Add "My Computer" ("This PC" on Windows 8+) to file tree
-            TreeNode myComputerNode = new TreeNode(Environment.OSVersion.Version >= new Version(6, 2) ? "This PC" : "My Computer" /* Check if the user is using Windows 8 or a newer version, and if so, make the "My Computer"/"This PC" node say "This PC"; otherwise, make it say "My Computer". This is done so that the wording of the node matches the user's Windows version. */, 2, 2);
+            TreeNode myComputerNode = new TreeNode(Environment.OSVersion.Version >= new Version(6, 2) ? "This PC" : "My Computer" /* Check if the user is using Windows 8 or a newer version, and if so, make the "My Computer"/"This PC" node say "This PC"; otherwise, make it say "My Computer". This is done so that the wording of the node matches the user's Windows version. */, 0, 0);
             myComputerNode.Tag = "MyComputer";
             treeView1.Nodes.Add(myComputerNode);
             
@@ -173,12 +173,7 @@ namespace Files
             foreach (string drive in drives)
             {
                 DriveInfo di = new DriveInfo(drive);
-                Icon driveIcon = IconHelper.GetIconOfPath(drive, true, true);
-                if (!imageListTree.Images.ContainsKey(drive))
-                {
-                    imageListTree.Images.Add(drive, driveIcon);
-                }
-                TreeNode node = new TreeNode(drive, imageListTree.Images.IndexOfKey(drive), imageListTree.Images.IndexOfKey(drive));
+                TreeNode node = new TreeNode(drive, Environment.GetEnvironmentVariable("systemroot").StartsWith(di.Name) ? 2 : 1, Environment.GetEnvironmentVariable("systemroot").StartsWith(di.Name) ? 2 : 1);
                 node.Tag = drive;
 
                 if (di.IsReady == true)
@@ -356,6 +351,12 @@ namespace Files
         private const uint SHGFI_SHELLICONSIZE = 0x000000004;     // get shell size icon
         private const uint SHGFI_PIDL = 0x000000008;     // pszPath is a pidl
         private const uint SHGFI_USEFILEATTRIBUTES = 0x000000010;     // use passed dwFileAttribute
+        [DllImport("Shell32")]
+
+        public static extern int ExtractIconEx(string sFile, int iIndex, ref IntPtr piLargeVersion, ref IntPtr piSmallVersion, int amountIcons);
+        private int num = 10;
+        private IntPtr[] large;
+        private IntPtr[] small;
         private void navigateToFolder(string path, bool rememberPosition = false)
         {
             oldPath = txtLocation.Text;
@@ -393,12 +394,17 @@ namespace Files
                                                            NativeMethods.LVSIL_SMALL,
                                                            hSysImgList);
 
+
+            // Set the ListView control to use that image list.
+            IntPtr hOldImgList2 = NativeMethods.SendMessage(lvFiles.Handle,
+                                                           NativeMethods.LVM_SETIMAGELIST,
+                                                           NativeMethods.LVSIL_NORMAL,
+                                                           hSysImgList);
             // If the ListView control already had an image list, delete the old one.
             if (hOldImgList != IntPtr.Zero)
             {
                 NativeMethods.ImageList_Destroy(hOldImgList);
             }
-
             foreach (DirectoryInfo dir in nodeDirInfo.GetDirectories()
                 .Where(d => !d.Attributes.HasFlag(FileAttributes.Hidden)))
             {

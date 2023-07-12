@@ -131,6 +131,7 @@
     <Compile Include="createFileForm.Designer.cs">
       <DependentUpon>createFileForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="FileInfoExtensions.cs" />
     <Compile Include="NativeToolStripRenderer.cs" />
     <Compile Include="NoSelectionListView.cs">
       <SubType>Component</SubType>
@@ -203,6 +204,7 @@
     <Content Include="Resources\Cut_16x.png" />
     <Content Include="Resources\drive.ico" />
     <Content Include="Resources\file.ico" />
+    <Content Include="Resources\folder.png" />
     <Content Include="Resources\ic_csharp.png" />
     <Content Include="Resources\ic_css.png" />
     <Content Include="Resources\ic_html.png" />
@@ -212,6 +214,7 @@
     <Content Include="Resources\Paste_16x.png" />
     <Content Include="Resources\Property_16x.png" />
     <Content Include="Resources\Rename_16x.png" />
+    <None Include="Resources\this pc.ico" />
     <Content Include="Resources\windrive.ico" />
     <None Include="Resources\search.png" />
     <None Include="Resources\file.png" />
