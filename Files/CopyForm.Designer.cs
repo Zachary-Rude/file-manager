@@ -82,9 +82,8 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.ProgressBar progressBar1;
-        private System.Windows.Forms.Label lbProgress;
         private System.Windows.Forms.Button btnCancel;
+        public System.Windows.Forms.Label lbProgress;
+        public System.Windows.Forms.ProgressBar progressBar1;
     }
 }
