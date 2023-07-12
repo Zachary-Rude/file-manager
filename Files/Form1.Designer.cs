@@ -613,7 +613,6 @@
             this.lvFiles.View = System.Windows.Forms.View.Details;
             this.lvFiles.AfterLabelEdit += new System.Windows.Forms.LabelEditEventHandler(this.lvFiles_AfterLabelEdit);
             this.lvFiles.ItemDrag += new System.Windows.Forms.ItemDragEventHandler(this.listView_ItemDrag);
-            this.lvFiles.SelectedIndexChanged += new System.EventHandler(this.lvFiles_SelectedIndexChanged);
             this.lvFiles.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.listView_MouseDoubleClick);
             // 
             // pictureBox1

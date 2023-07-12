@@ -17,6 +17,7 @@ using System.Collections;
 using System.Collections.Specialized;
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.VisualBasic.FileIO;
+using Microsoft.WindowsAPICodePack.Shell;
 
 namespace Files
 {
@@ -1130,7 +1131,7 @@ namespace Files
             }
         }
 
-        static void CopyFolder(string sourceFolder, string destinationFolder, bool recursive = true)
+        static void CopyFolder(string sourceFolder, string destinationFolder, BackgroundWorker worker, bool recursive = true)
         {
             // Get information about the source directory
             var dir = new DirectoryInfo(sourceFolder);
@@ -1146,10 +1147,12 @@ namespace Files
             Directory.CreateDirectory(destinationFolder);
 
             // Get the files in the source directory and copy to the destination directory
+            int i = 0;
             foreach (FileInfo file in dir.GetFiles())
             {
                 string targetFilePath = Path.Combine(destinationFolder, file.Name);
                 file.CopyTo(targetFilePath);
+                worker.ReportProgress(i * 100 / dir.GetFiles().Length);
             }
 
             // If recursive and copying subdirectories, recursively call this method
@@ -1158,7 +1161,7 @@ namespace Files
                 foreach (DirectoryInfo subDir in dirs)
                 {
                     string newDestinationDir = Path.Combine(destinationFolder, subDir.Name);
-                    CopyFolder(subDir.FullName, newDestinationDir, true);
+                    CopyFolder(subDir.FullName, newDestinationDir, worker, true);
                 }
             }
         }
@@ -1446,6 +1449,11 @@ namespace Files
         }
 
         private void lvFiles_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
         {
 
         }

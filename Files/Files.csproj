@@ -125,6 +125,12 @@
     <Compile Include="AboutFilesForm.Designer.cs">
       <DependentUpon>AboutFilesForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="CopyForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CopyForm.Designer.cs">
+      <DependentUpon>CopyForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="createFileForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -159,6 +165,9 @@
     <Compile Include="TransferProgress.cs" />
     <EmbeddedResource Include="AboutFilesForm.resx">
       <DependentUpon>AboutFilesForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CopyForm.resx">
+      <DependentUpon>CopyForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="createFileForm.resx">
       <DependentUpon>createFileForm.cs</DependentUpon>
