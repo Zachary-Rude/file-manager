@@ -968,7 +968,7 @@ namespace Files
                 do
                 {
                     number++;
-                    string newFileName = $"{fileName}{number}{fileExtension}";
+                    string newFileName = $"{fileName} ({number}){fileExtension}";
                     filePath = Path.Combine(folderPath, newFileName);
                 }
                 while (File.Exists(filePath));
@@ -995,7 +995,7 @@ namespace Files
                 do
                 {
                     number++;
-                    string newFolderName = $"{folderName}{number}";
+                    string newFolderName = $"{folderName} ({number})";
                     path = Path.Combine(Path.GetDirectoryName(path), newFolderName);
                 }
                 while (Directory.Exists(path));
