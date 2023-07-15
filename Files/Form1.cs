@@ -42,7 +42,7 @@ namespace Files
     public partial class Form1 : Form
     {
         string storedPath;
-        string currentPath;
+        public static string currentPath;
         string newPath;
         string oldPath;
         bool txtLocationJustEntered = false;
@@ -108,6 +108,11 @@ namespace Files
                     break;
                 case Keys.F5:
                     menuItem21.PerformClick();
+                    break;
+                case Keys.Control | Keys.V:
+                    PasteFilesFromClipboard(currentPath);
+                    navigateToFolder(currentPath, true);
+                    UpdateFileTree();
                     break;
             }
             return base.ProcessCmdKey(ref msg, keyData);
@@ -353,7 +358,7 @@ namespace Files
         private int num = 10;
         private IntPtr[] large;
         private IntPtr[] small;
-        private void navigateToFolder(string path, bool rememberPosition = false)
+        public void navigateToFolder(string path, bool rememberPosition = false)
         {
             oldPath = txtLocation.Text;
             int topItemIndex = 0;
@@ -792,7 +797,7 @@ namespace Files
         {
             if (lvFiles.FocusedItem != null)
             {
-                Process.Start(Application.ExecutablePath, listFiles[lvFiles.FocusedItem.Index]);
+                Process.Start(Application.ExecutablePath, "\"" + listFiles[lvFiles.FocusedItem.Index] + "\"" /* Fix the "Could not find part of path" error for folder names with spaces in them */);
             }
         }
 
@@ -1073,7 +1078,7 @@ namespace Files
             UpdateFileTree();
         }
 
-        public static void PasteFilesFromClipboard(string aTargetFolder)
+        public void PasteFilesFromClipboard(string aTargetFolder)
         {
             var aFileDropList = Clipboard.GetFileDropList();
             if (aFileDropList == null || aFileDropList.Count == 0) return;
@@ -1116,11 +1121,17 @@ namespace Files
                     {
                         if (File.GetAttributes(aFileName).HasFlag(FileAttributes.Directory))
                         {
-                            CopyFolder(aFileName, GetUniqueFolderName(Path.Combine(aTargetFolder, Path.GetFileName(aFileName) + " - Copy")));
+                            Task.Run(() =>
+                            {
+                                FileSystem.CopyDirectory(aFileName, GetUniqueFolderName(Path.Combine(aTargetFolder, Path.GetFileName(aFileName) + " - Copy")), UIOption.AllDialogs);
+                            }).GetAwaiter().OnCompleted(() => { BeginInvoke(new Action(() => { navigateToFolder(currentPath); })); });
                         }
                         else
                         {
-                            File.Copy(aFileName, GetUniqueFilePath(Path.Combine(aTargetFolder, Path.GetFileName(aFileName).Replace(Path.GetExtension(aFileName), " - Copy") + Path.GetExtension(aFileName))));
+                            Task.Run(() =>
+                            {
+                                FileSystem.CopyFile(aFileName, GetUniqueFilePath(Path.Combine(aTargetFolder, Path.GetFileName(aFileName).Replace(Path.GetExtension(aFileName), " - Copy") + Path.GetExtension(aFileName))), UIOption.AllDialogs);
+                            }).GetAwaiter().OnCompleted(() => { BeginInvoke(new Action(() => { navigateToFolder(currentPath); })); }); ;
                         }
                     }
                     catch (Exception ex)
@@ -1131,7 +1142,7 @@ namespace Files
             }
         }
 
-        static void CopyFolder(string sourceFolder, string destinationFolder, BackgroundWorker worker, bool recursive = true)
+        static void CopyFolder(string sourceFolder, string destinationFolder, bool recursive = true)
         {
             // Get information about the source directory
             var dir = new DirectoryInfo(sourceFolder);
@@ -1151,8 +1162,10 @@ namespace Files
             foreach (FileInfo file in dir.GetFiles())
             {
                 string targetFilePath = Path.Combine(destinationFolder, file.Name);
-                file.CopyTo(targetFilePath);
-                worker.ReportProgress(i * 100 / dir.GetFiles().Length);
+                using (CopyForm copyForm = new CopyForm())
+                {
+                    copyForm.Copy(file, new FileInfo(targetFilePath));
+                }
             }
 
             // If recursive and copying subdirectories, recursively call this method
@@ -1161,7 +1174,7 @@ namespace Files
                 foreach (DirectoryInfo subDir in dirs)
                 {
                     string newDestinationDir = Path.Combine(destinationFolder, subDir.Name);
-                    CopyFolder(subDir.FullName, newDestinationDir, worker, true);
+                    CopyFolder(subDir.FullName, newDestinationDir, true);
                 }
             }
         }
@@ -1409,18 +1422,43 @@ namespace Files
 
         private void lvFiles_AfterLabelEdit(object sender, LabelEditEventArgs e)
         {
-            lvFiles.LabelEdit = false;
             if (e.Label != null)
             {
                 try
                 {
                     if (lvFiles.FocusedItem.SubItems[1].Text == "Folder")
                     {
-                        Directory.Move(listFiles[lvFiles.FocusedItem.Index], Path.Combine(currentPath, e.Label));
+                        try
+                        {
+                            Directory.Move(listFiles[lvFiles.FocusedItem.Index], Path.Combine(currentPath, e.Label));
+                        }
+                        catch (IOException)
+                        {
+                            DialogResult dr = MessageBox.Show(string.Format("Do you want to rename \"{0}\" to \"{1}\"?", Path.GetFileName(listFiles[lvFiles.FocusedItem.Index]), Path.GetFileName(GetUniqueFolderName(Path.Combine(currentPath, e.Label)))), "Rename File", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                            if (dr == DialogResult.Yes)
+                            {
+                                Directory.Move(listFiles[lvFiles.FocusedItem.Index], GetUniqueFolderName(Path.Combine(currentPath, e.Label)));
+                            }
+                        }
+                        navigateToFolder(currentPath, true);
+                        UpdateFileTree();
                     }
                     else
                     {
-                        File.Move(listFiles[lvFiles.FocusedItem.Index], Path.Combine(currentPath, e.Label));
+                        try
+                        {
+                            File.Move(listFiles[lvFiles.FocusedItem.Index], Path.Combine(currentPath, e.Label));
+                        }
+                        catch (IOException)
+                        {
+                            DialogResult dr = MessageBox.Show(string.Format("Do you want to rename \"{0}\" to \"{1}\"?", Path.GetFileName(listFiles[lvFiles.FocusedItem.Index]), Path.GetFileName(GetUniqueFilePath(Path.Combine(currentPath, e.Label)))), "Rename File", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                            if (dr == DialogResult.Yes)
+                            {
+                                File.Move(listFiles[lvFiles.FocusedItem.Index], GetUniqueFilePath(Path.Combine(currentPath, e.Label)));
+                            }
+                        }
+                        navigateToFolder(currentPath, true);
+                        UpdateFileTree();
                     }
                 }
                 catch (Exception ex)

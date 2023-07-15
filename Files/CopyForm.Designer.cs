@@ -31,6 +31,7 @@
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.lbProgress = new System.Windows.Forms.Label();
             this.btnCancel = new System.Windows.Forms.Button();
+            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.SuspendLayout();
             // 
             // progressBar1
@@ -85,5 +86,6 @@
         private System.Windows.Forms.Button btnCancel;
         public System.Windows.Forms.Label lbProgress;
         public System.Windows.Forms.ProgressBar progressBar1;
+        private System.ComponentModel.BackgroundWorker backgroundWorker1;
     }
 }
